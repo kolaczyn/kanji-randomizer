@@ -1,4 +1,23 @@
 body {
   background-color: aliceblue;
   color: navy;
+
+  font-size: 1.5rem;
+}
+
+button {
+  font-size: 1.5rem;
+
+}
+
+.kanji {
+  font-size: 2.5rem;
+}
+
+.container {
+  max-width: 25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }

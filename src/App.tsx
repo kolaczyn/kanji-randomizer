@@ -1,10 +1,23 @@
-import { kanjiN5 } from "./kanji.ts";
+import { kanjiN4, kanjiN5 } from "./kanji.ts";
 import { shuffleArray } from "./utils.ts";
 import { useEffect, useRef, useState } from "react";
 
+type Level = "N5" | "N4";
+
 export const App = () => {
-  const [scrambledKanji, setScambledKanji] = useState(() =>
-    shuffleArray(kanjiN5),
+  const [lvl, setLvl] = useState<Level>("N5");
+
+  return <Quiz setLvl={setLvl} lvl={lvl} key={lvl} />;
+};
+
+type QuizProps = {
+  setLvl: (next: Level) => void;
+  lvl: Level;
+};
+
+const Quiz = ({ lvl, setLvl }: QuizProps) => {
+  const [scrambledKanji, setScrambledKanji] = useState(() =>
+    shuffleArray(lvl === "N5" ? kanjiN5 : kanjiN4),
   );
   const [idx, setIdx] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -23,7 +36,7 @@ export const App = () => {
   };
 
   const handleReset = () => {
-    setScambledKanji(shuffleArray(kanjiN5));
+    setScrambledKanji(shuffleArray(kanjiN5));
     resetBtnRef.current?.blur();
   };
 
@@ -45,15 +58,16 @@ export const App = () => {
     const [kanji, explanation] = scrambledKanji[idx];
     return {
       question: showKanji ? kanji : explanation,
-      answer: showKanji ? explanation : showKanji,
+      answer: showKanji ? explanation : kanji,
     };
   };
 
   const card = getCard();
 
+  console.log(card);
+
   return (
-    <div>
-      <h1>Kanji</h1>
+    <div className="container">
       <button onClick={handleOk}>Ok</button>
       <span>
         {idx + 1} of {scrambledKanji.length}
@@ -66,12 +80,15 @@ export const App = () => {
         <button onClick={() => setShowKanji((prev) => !prev)}>
           {showKanji ? "show kanji" : "show explanation"}
         </button>
+        <button onClick={() => setLvl(lvl === "N5" ? "N4" : "N5")}>
+          {lvl === "N5" ? "Change to N4" : "Change to N5"}
+        </button>
       </details>
       <br />
       {card ? (
         <>
-          <span>{card.question}</span>
-          {isRevealed && <span>{card.answer}</span>}
+          <div>{card.question}</div>
+          {isRevealed && <div className="kanji">{card.answer}</div>}
         </>
       ) : (
         <span>no more cards</span>
