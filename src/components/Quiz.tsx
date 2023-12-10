@@ -13,6 +13,12 @@ export const Quiz = () => {
   const lvl = params.level as Level;
 
   const deck = useMemo(() => shuffleArray(getDeck(lvl)!), [lvl]);
+  const [incorrect, setIncorrect] = useState<number[]>([]);
+
+  const handleIncorrect = (idx: number) => {
+    if (incorrect.includes(idx)) return;
+    setIncorrect((prev) => [...prev, idx]);
+  };
 
   const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
     idx: 0,
@@ -22,7 +28,7 @@ export const Quiz = () => {
 
   const showKanji = settings.showFirst === "kanji";
   const isFirst = curr.idx === 0;
-  const isLast = curr.idx >= deck.length - 1;
+  const isLast = curr.idx > deck.length - 1;
 
   const handlePrevious = () => {
     // setIdx((prev) => Math.max(prev - 1, 0));
@@ -104,10 +110,30 @@ export const Quiz = () => {
         <div className="quiz">
           <div>{card.question}</div>
           {curr.isRevealed && <div>{card.answer}</div>}
+          {curr.isRevealed && (
+            <Button
+              isDisabled={incorrect.includes(curr.idx)}
+              onClick={() => handleIncorrect(curr.idx)}
+            >
+              Mark as incorrect
+            </Button>
+          )}
         </div>
       ) : (
         <>
-          <div>no more cards</div>
+          <h2>No more cards</h2>
+          {incorrect.length > 0 ? (
+            <>
+              <div>Incorrect Kanji:</div>
+              <ul>
+                {incorrect.map((idx) => (
+                  <li key={idx}>
+                    {deck[idx][0]} - {deck[idx][1]}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           <Link to="/">
             <Button>Exit</Button>
           </Link>
