@@ -1,6 +1,6 @@
-import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
-import { StartScreen } from "./StartScreen.tsx";
-import { Quiz } from "./Quiz.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { StartScreen } from "./components/StartScreen.tsx";
+import { Quiz } from "./components/Quiz.tsx";
 
 const router = createBrowserRouter([
   {

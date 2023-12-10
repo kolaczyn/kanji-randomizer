@@ -1,10 +1,10 @@
-import { kanjiN4, kanjiN5 } from "./kanji.ts";
-import { shuffleArray } from "./utils.ts";
-import { useMemo, useRef, useState } from "react";
+import { kanjiN4, kanjiN5 } from "../const/kanji.ts";
+import { shuffleArray } from "../utils/shuffleArray.ts";
+import { useMemo, useState } from "react";
 import { Button, Container } from "@chakra-ui/react";
-import { useEventListeners } from "./hooks/useEventListeners.ts";
+import { useEventListeners } from "../hooks/useEventListeners.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSettings } from "./useSettings.ts";
+import { useSettings } from "../hooks/useSettings.ts";
 
 export const Quiz = () => {
   const params = useParams();
