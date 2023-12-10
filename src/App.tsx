@@ -1,6 +1,8 @@
 import { kanjiN4, kanjiN5 } from "./kanji.ts";
 import { shuffleArray } from "./utils.ts";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { Button } from "@chakra-ui/react";
+import { useEventListeners } from "./hooks/useEventListeners.ts";
 
 type Level = "N5" | "N4";
 
@@ -40,15 +42,7 @@ const Quiz = ({ lvl, setLvl }: QuizProps) => {
     resetBtnRef.current?.blur();
   };
 
-  useEffect(() => {
-    const eventListener = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        handleOk();
-      }
-    };
-    document.addEventListener("keydown", eventListener);
-    return () => document.removeEventListener("keydown", eventListener);
-  }, []);
+  useEventListeners(handleOk);
 
   const getCard = () => {
     const element = scrambledKanji[idx];
@@ -64,25 +58,25 @@ const Quiz = ({ lvl, setLvl }: QuizProps) => {
 
   const card = getCard();
 
-  console.log(card);
-
   return (
     <div className="container">
-      <button onClick={handleOk}>Ok</button>
+      <Button colorScheme="green" onClick={handleOk}>
+        Ok
+      </Button>
       <span>
         {idx + 1} of {scrambledKanji.length}
       </span>
       <details>
         <summary>More options</summary>
-        <button ref={resetBtnRef} onClick={handleReset}>
+        <Button ref={resetBtnRef} onClick={handleReset}>
           Reset
-        </button>
-        <button onClick={() => setShowKanji((prev) => !prev)}>
+        </Button>
+        <Button onClick={() => setShowKanji((prev) => !prev)}>
           {showKanji ? "show kanji" : "show explanation"}
-        </button>
-        <button onClick={() => setLvl(lvl === "N5" ? "N4" : "N5")}>
+        </Button>
+        <Button onClick={() => setLvl(lvl === "N5" ? "N4" : "N5")}>
           {lvl === "N5" ? "Change to N4" : "Change to N5"}
-        </button>
+        </Button>
       </details>
       <br />
       {card ? (
