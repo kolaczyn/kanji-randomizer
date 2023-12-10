@@ -1,49 +1,67 @@
-import { kanjiN4, kanjiN5 } from "../const/kanji.ts";
 import { shuffleArray } from "../utils/shuffleArray.ts";
 import { useMemo, useState } from "react";
 import { Button, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSettings } from "../hooks/useSettings.ts";
+import { getDeck } from "../utils/getDeck.ts";
+import { Level } from "../types.ts";
 
 export const Quiz = () => {
-  const params = useParams();
-  const lvl = params.level!;
   const navigate = useNavigate();
+  const params = useParams();
+  const lvl = params.level as Level;
 
-  const scrambledKanji = useMemo(
-    () => shuffleArray(lvl === "N5" ? kanjiN5 : kanjiN4),
-    [lvl],
-  );
+  const deck = useMemo(() => shuffleArray(getDeck(lvl)!), [lvl]);
 
-  const [idx, setIdx] = useState(0);
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
+    idx: 0,
+    isRevealed: false,
+  });
   const [settings, setSettings] = useSettings();
-  const showKanji = settings.showFirst === "kanji";
 
-  const handleOk = () => {
-    setIsRevealed((prev) => {
-      if (prev) {
-        setIdx((prev) => prev + 1);
-        return false;
-      } else {
-        return true;
-      }
-    });
+  const showKanji = settings.showFirst === "kanji";
+  const isFirst = curr.idx === 0;
+  const isLast = curr.idx >= deck.length - 1;
+
+  const handlePrevious = () => {
+    // setIdx((prev) => Math.max(prev - 1, 0));
+    setCurr((prev) => ({
+      idx: Math.max(prev.idx - 1, 0),
+      isRevealed: false,
+    }));
+  };
+
+  const handleNext = () => {
+    // setIdx((prev) => Math.min(prev + 1, deck.length));
+    setCurr((prev) =>
+      prev.isRevealed
+        ? {
+            idx: Math.min(prev.idx + 1, deck.length),
+            isRevealed: false,
+          }
+        : {
+            idx: prev.idx,
+            isRevealed: true,
+          },
+    );
   };
 
   const handleReset = () => {
     navigate(0);
   };
 
-  useEventListeners(handleOk);
+  useEventListeners({
+    onPrevious: handlePrevious,
+    onNext: handleNext,
+  });
 
   const getCard = () => {
-    const element = scrambledKanji[idx];
+    const element = deck[curr.idx];
     if (!element) {
       return null;
     }
-    const [kanji, explanation] = scrambledKanji[idx];
+    const [kanji, explanation] = deck[curr.idx];
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
@@ -55,13 +73,16 @@ export const Quiz = () => {
   return (
     <Container>
       <h1>Level: {lvl}</h1>
-      <Button colorScheme="green" onClick={handleOk}>
-        Ok
-      </Button>
+      <Button isDisabled={isFirst} onClick={handlePrevious}>
+        Previous
+      </Button>{" "}
       <span>
         {/*Math.min prevents text like "10 of 9" from appearing */}
-        {Math.min(idx + 1, scrambledKanji.length)} of {scrambledKanji.length}
-      </span>
+        {Math.min(curr.idx + 1, deck.length)} of {deck.length}
+      </span>{" "}
+      <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
+        Next
+      </Button>
       <details>
         <summary>More options</summary>
         <Button onClick={handleReset}>Reset</Button>
@@ -82,7 +103,7 @@ export const Quiz = () => {
       {card ? (
         <div className="quiz">
           <div>{card.question}</div>
-          {isRevealed && <div>{card.answer}</div>}
+          {curr.isRevealed && <div>{card.answer}</div>}
         </div>
       ) : (
         <>

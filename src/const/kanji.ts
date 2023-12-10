@@ -1,6 +1,6 @@
 // [...table.children[1].children].map(x => [x.children[1]?.textContent, x.children[4]?.textContent]).filter(x => x[0] != null)
 
-type KanjiList = [string, string][];
+import { KanjiList } from "../types.ts";
 
 export const kanjiN5: KanjiList = [
   ["日", "day, sun, Japan, counter for days"],
