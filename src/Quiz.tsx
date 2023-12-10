@@ -11,15 +11,15 @@ export const Quiz = () => {
   const lvl = params.level!;
   const navigate = useNavigate();
 
-  const scrambledKanji = useMemo(() => {
-    return shuffleArray(lvl === "N5" ? kanjiN5 : kanjiN4);
-  }, [lvl]);
+  const scrambledKanji = useMemo(
+    () => shuffleArray(lvl === "N5" ? kanjiN5 : kanjiN4),
+    [lvl],
+  );
 
   const [idx, setIdx] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   const [settings, setSettings] = useSettings();
   const showKanji = settings.showFirst === "kanji";
-  const resetBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleOk = () => {
     setIsRevealed((prev) => {
@@ -64,9 +64,7 @@ export const Quiz = () => {
       </span>
       <details>
         <summary>More options</summary>
-        <Button ref={resetBtnRef} onClick={handleReset}>
-          Reset
-        </Button>
+        <Button onClick={handleReset}>Reset</Button>
         <Link to="/">
           <Button>Exit</Button>
         </Link>
