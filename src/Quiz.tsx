@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { Button, Container } from "@chakra-ui/react";
 import { useEventListeners } from "./hooks/useEventListeners.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSettings } from "./useSettings.ts";
 
 export const Quiz = () => {
   const params = useParams();
@@ -16,7 +17,8 @@ export const Quiz = () => {
 
   const [idx, setIdx] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [showKanji, setShowKanji] = useState(false);
+  const [settings, setSettings] = useSettings();
+  const showKanji = settings.showFirst === "kanji";
   const resetBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleOk = () => {
@@ -68,16 +70,22 @@ export const Quiz = () => {
         <Link to="/">
           <Button>Exit</Button>
         </Link>
-        <Button onClick={() => setShowKanji((prev) => !prev)}>
+        <Button
+          onClick={() =>
+            setSettings({
+              showFirst: showKanji ? "definition" : "kanji",
+            })
+          }
+        >
           {showKanji ? "show kanji" : "show explanation"}
         </Button>
       </details>
       <br />
       {card ? (
-        <>
+        <div className="quiz">
           <div>{card.question}</div>
-          {isRevealed && <div className="kanji">{card.answer}</div>}
-        </>
+          {isRevealed && <div>{card.answer}</div>}
+        </div>
       ) : (
         <>
           <div>no more cards</div>
