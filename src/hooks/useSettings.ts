@@ -6,7 +6,7 @@ const defaultSettings: AppSettings = {
   showFirst: "kanji",
 };
 
-type AppSettings = {
+export type AppSettings = {
   showFirst: "kanji" | "definition";
 };
 

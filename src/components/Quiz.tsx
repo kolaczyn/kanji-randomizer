@@ -1,16 +1,17 @@
 import { shuffleArray } from "../utils/shuffleArray.ts";
 import { useMemo, useState } from "react";
-import { Button, Container } from "@chakra-ui/react";
+import { Button, ButtonGroup, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSettings } from "../hooks/useSettings.ts";
+import { Link, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
 import { Level } from "../types.ts";
+import { Settings } from "./Settings.tsx";
+import { useSettings } from "../hooks/useSettings.ts";
 
 export const Quiz = () => {
-  const navigate = useNavigate();
   const params = useParams();
   const lvl = params.level as Level;
+  const [settings, setSettings] = useSettings();
 
   const deck = useMemo(() => shuffleArray(getDeck(lvl)!), [lvl]);
   const [incorrect, setIncorrect] = useState<number[]>([]);
@@ -24,7 +25,6 @@ export const Quiz = () => {
     idx: 0,
     isRevealed: false,
   });
-  const [settings, setSettings] = useSettings();
 
   const showKanji = settings.showFirst === "kanji";
   const isFirst = curr.idx === 0;
@@ -39,7 +39,6 @@ export const Quiz = () => {
   };
 
   const handleNext = () => {
-    // setIdx((prev) => Math.min(prev + 1, deck.length));
     setCurr((prev) =>
       prev.isRevealed
         ? {
@@ -51,10 +50,6 @@ export const Quiz = () => {
             isRevealed: true,
           },
     );
-  };
-
-  const handleReset = () => {
-    navigate(0);
   };
 
   useEventListeners({
@@ -79,32 +74,20 @@ export const Quiz = () => {
   return (
     <Container>
       <h1>Level: {lvl}</h1>
-      <Button isDisabled={isFirst} onClick={handlePrevious}>
-        Previous
-      </Button>{" "}
-      <span>
-        {/*Math.min prevents text like "10 of 9" from appearing */}
-        {Math.min(curr.idx + 1, deck.length)} of {deck.length}
-      </span>{" "}
-      <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
-        Next
-      </Button>
-      <details>
-        <summary>More options</summary>
-        <Button onClick={handleReset}>Reset</Button>
-        <Link to="/">
-          <Button>Exit</Button>
-        </Link>
-        <Button
-          onClick={() =>
-            setSettings({
-              showFirst: showKanji ? "definition" : "kanji",
-            })
-          }
-        >
-          {showKanji ? "show kanji" : "show explanation"}
+      <ButtonGroup>
+        <Button isDisabled={isFirst} onClick={handlePrevious}>
+          Previous
+        </Button>{" "}
+        <span>
+          {/*Math.min prevents text like "10 of 9" from appearing */}
+          {Math.min(curr.idx + 1, deck.length)} of {deck.length}
+        </span>
+        <br />
+        <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
+          Next
         </Button>
-      </details>
+        <Settings settings={settings} setSettings={setSettings} />
+      </ButtonGroup>
       <br />
       {card ? (
         <div className="quiz">
