@@ -10,14 +10,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { AppSettings } from "../hooks/useSettings.ts";
+import { useSettings } from "../hooks/useSettings.tsx";
 
-type Props = {
-  settings: AppSettings;
-  setSettings: (newSettings: AppSettings) => void;
-};
-
-export const Settings = ({ setSettings, settings }: Props) => {
+export const Settings = () => {
+  const [settings, setSettings] = useSettings();
   const navigate = useNavigate();
   const handleReset = () => {
     navigate(0);

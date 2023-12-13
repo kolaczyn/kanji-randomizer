@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState, createContext, ReactNode } from "react";
 
 const KEY = "appSettings";
+
+type SettingsContextData = [AppSettings, (newValue: AppSettings) => void];
 
 const defaultSettings: AppSettings = {
   showFirst: "kanji",
@@ -18,7 +20,7 @@ const readFromLocalStorage = (): AppSettings => {
     : defaultSettings;
 };
 
-export const useSettings = () => {
+const useSettingsInternal = () => {
   const [settings, setSettings] = useState(readFromLocalStorage);
 
   const setSettingsWrapped = (newSettings: AppSettings) => {
@@ -28,3 +30,21 @@ export const useSettings = () => {
 
   return [settings, setSettingsWrapped] as const;
 };
+
+const SettingsContext = createContext<SettingsContextData>(null!);
+
+type Props = {
+  children: ReactNode;
+};
+
+export const SettingsProvider = ({ children }: Props) => {
+  const [settings, setSettings] = useSettingsInternal();
+
+  return (
+    <SettingsContext.Provider value={[settings, setSettings]}>
+      {children}
+    </SettingsContext.Provider>
+  );
+};
+
+export const useSettings = () => useContext(SettingsContext);

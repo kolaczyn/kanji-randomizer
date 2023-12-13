@@ -6,12 +6,12 @@ import { Link, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
 import { Level } from "../types.ts";
 import { Settings } from "./Settings.tsx";
-import { useSettings } from "../hooks/useSettings.ts";
+import { useSettings } from "../hooks/useSettings.tsx";
 
 export const Quiz = () => {
   const params = useParams();
   const lvl = params.level as Level;
-  const [settings, setSettings] = useSettings();
+  const [settings] = useSettings();
 
   const deck = useMemo(() => shuffleArray(getDeck(lvl)!), [lvl]);
   const [incorrect, setIncorrect] = useState<number[]>([]);
@@ -26,7 +26,6 @@ export const Quiz = () => {
     isRevealed: false,
   });
 
-  const showKanji = settings.showFirst === "kanji";
   const isFirst = curr.idx === 0;
   const isLast = curr.idx > deck.length - 1;
 
@@ -63,6 +62,7 @@ export const Quiz = () => {
       return null;
     }
     const [kanji, explanation] = deck[curr.idx];
+    const showKanji = settings.showFirst === "kanji";
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
@@ -82,11 +82,10 @@ export const Quiz = () => {
           {/*Math.min prevents text like "10 of 9" from appearing */}
           {Math.min(curr.idx + 1, deck.length)} of {deck.length}
         </span>
-        <br />
         <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
           Next
         </Button>
-        <Settings settings={settings} setSettings={setSettings} />
+        <Settings />
       </ButtonGroup>
       <br />
       {card ? (
