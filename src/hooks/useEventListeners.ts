@@ -8,9 +8,6 @@ type Args = {
 export const useEventListeners = ({ onNext, onPrevious }: Args) => {
   useEffect(() => {
     const eventListener = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        onNext();
-      }
       if (e.key === "ArrowLeft") {
         onPrevious();
       }
