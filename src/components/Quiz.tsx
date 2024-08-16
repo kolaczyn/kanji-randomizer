@@ -21,8 +21,11 @@ export const Quiz = () => {
   const [incorrect, setIncorrect] = useState<number[]>([]);
 
   const handleIncorrect = (idx: number) => {
-    if (incorrect.includes(idx)) return;
-    setIncorrect((prev) => [...prev, idx]);
+    if (incorrect.includes(idx)) {
+      setIncorrect((prev) => prev.filter((i) => i !== idx));
+    } else {
+      setIncorrect((prev) => [...prev, idx]);
+    }
   };
 
   const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
@@ -107,10 +110,10 @@ export const Quiz = () => {
                 {curr.isRevealed && (
                   <Button
                     marginBottom="1rem"
-                    isDisabled={incorrect.includes(curr.idx)}
                     onClick={() => handleIncorrect(curr.idx)}
                   >
-                    Mark as incorrect
+                    Mark as{" "}
+                    {incorrect.includes(curr.idx) ? "correct" : "incorrect"}
                   </Button>
                 )}
               </>
@@ -139,9 +142,12 @@ export const Quiz = () => {
       </div>
 
       {isIncorrectShowed && (
-        <Container>
-          <IncorrectKanji incorrect={incorrect} deck={deck} />
-        </Container>
+        <>
+          <hr />
+          <Container>
+            <IncorrectKanji incorrect={incorrect} deck={deck} />
+          </Container>
+        </>
       )}
     </>
   );
