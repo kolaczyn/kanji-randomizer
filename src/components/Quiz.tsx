@@ -7,6 +7,7 @@ import { getDeck } from "../utils/getDeck.ts";
 import { Level } from "../types.ts";
 import { Settings } from "./Settings.tsx";
 import { useSettings } from "../hooks/useSettings.tsx";
+import { kanjiToStrokeImgName } from "../utils/kanjiToStrokeImgName.ts";
 
 export const Quiz = () => {
   const params = useParams();
@@ -56,16 +57,19 @@ export const Quiz = () => {
     onNext: handleNext,
   });
 
-  const getCard = () => {
+  const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
     const element = deck[curr.idx];
-    if (!element) {
-      return null;
-    }
-    const [kanji, explanation] = deck[curr.idx];
+    if (element == null) return [null, null];
+    const [kanji, explanation] = element;
+    return [kanji, explanation];
+  }, [curr.idx, deck]);
+
+  const getCard = () => {
     const showKanji = settings.showFirst === "kanji";
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
+      isOver: curr.idx >= deck.length,
     };
   };
 
@@ -88,10 +92,15 @@ export const Quiz = () => {
         <Settings />
       </ButtonGroup>
       <br />
-      {card ? (
+      {!card.isOver ? (
         <div className="quiz">
           <div>{card.question}</div>
-          {curr.isRevealed && <div>{card.answer}</div>}
+          {curr.isRevealed && (
+            <>
+              {kanji && <img src={kanjiToStrokeImgName(kanji)} alt={kanji} />}
+              <div>{card.answer}</div>
+            </>
+          )}
           {curr.isRevealed && (
             <Button
               isDisabled={incorrect.includes(curr.idx)}
