@@ -4,17 +4,20 @@ import { Button, ButtonGroup, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
 import { Link, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
-import { Level } from "../types.ts";
+import { KanjiList, Level } from "../types.ts";
 import { Settings } from "./Settings.tsx";
 import { useSettings } from "../hooks/useSettings.tsx";
 import { kanjiToStrokeImgName } from "../utils/kanjiToStrokeImgName.ts";
+import { IncorrectKanji } from "./IncorrectKanji.tsx";
 
 export const Quiz = () => {
   const params = useParams();
   const lvl = params.level as Level;
   const [settings] = useSettings();
 
-  const deck = useMemo(() => shuffleArray(getDeck(lvl)!), [lvl]);
+  const [isIncorrectShowed, setIsIncorrectShowed] = useState(false);
+
+  const deck = useMemo<KanjiList>(() => shuffleArray(getDeck(lvl)!), [lvl]);
   const [incorrect, setIncorrect] = useState<number[]>([]);
 
   const handleIncorrect = (idx: number) => {
@@ -89,6 +92,9 @@ export const Quiz = () => {
           <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
             Next
           </Button>
+          <Button onClick={() => setIsIncorrectShowed((prev) => !prev)}>
+            {isIncorrectShowed ? "Hide" : "Show"} incorrect
+          </Button>
           <Settings />
         </ButtonGroup>
         <br />
@@ -114,16 +120,7 @@ export const Quiz = () => {
           <>
             <h2>No more cards</h2>
             {incorrect.length > 0 ? (
-              <>
-                <div>Incorrect Kanji:</div>
-                <ul>
-                  {incorrect.map((idx) => (
-                    <li key={idx}>
-                      {deck[idx][0]} - {deck[idx][1]}
-                    </li>
-                  ))}
-                </ul>
-              </>
+              <IncorrectKanji incorrect={incorrect} deck={deck} />
             ) : null}
             <Link to="/">
               <Button>Exit</Button>
@@ -140,6 +137,12 @@ export const Quiz = () => {
           />
         ) : null}
       </div>
+
+      {isIncorrectShowed && (
+        <Container>
+          <IncorrectKanji incorrect={incorrect} deck={deck} />
+        </Container>
+      )}
     </>
   );
 };
