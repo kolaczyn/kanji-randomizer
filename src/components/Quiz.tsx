@@ -76,60 +76,70 @@ export const Quiz = () => {
   const card = getCard();
 
   return (
-    <Container>
-      <h1>Level: {lvl}</h1>
-      <ButtonGroup>
-        <Button isDisabled={isFirst} onClick={handlePrevious}>
-          Previous
-        </Button>{" "}
-        <span>
-          {/*Math.min prevents text like "10 of 9" from appearing */}
-          {Math.min(curr.idx + 1, deck.length)} of {deck.length}
-        </span>
-        <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
-          Next
-        </Button>
-        <Settings />
-      </ButtonGroup>
-      <br />
-      {!card.isOver ? (
-        <div className="quiz">
-          <div>{card.question}</div>
-          {curr.isRevealed && (
-            <>
-              {kanji && <img src={kanjiToStrokeImgName(kanji)} alt={kanji} />}
-              <div>{card.answer}</div>
-            </>
-          )}
-          {curr.isRevealed && (
-            <Button
-              isDisabled={incorrect.includes(curr.idx)}
-              onClick={() => handleIncorrect(curr.idx)}
-            >
-              Mark as incorrect
-            </Button>
-          )}
-        </div>
-      ) : (
-        <>
-          <h2>No more cards</h2>
-          {incorrect.length > 0 ? (
-            <>
-              <div>Incorrect Kanji:</div>
-              <ul>
-                {incorrect.map((idx) => (
-                  <li key={idx}>
-                    {deck[idx][0]} - {deck[idx][1]}
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
-          <Link to="/">
-            <Button>Exit</Button>
-          </Link>
-        </>
-      )}
-    </Container>
+    <>
+      <Container>
+        <ButtonGroup>
+          <Button isDisabled={isFirst} onClick={handlePrevious}>
+            Previous
+          </Button>{" "}
+          <span>
+            {/*Math.min prevents text like "10 of 9" from appearing */}
+            {Math.min(curr.idx + 1, deck.length)} of {deck.length}
+          </span>
+          <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
+            Next
+          </Button>
+          <Settings />
+        </ButtonGroup>
+        <br />
+        {!card.isOver ? (
+          <div className="quiz">
+            <div>{card.question}</div>
+            {curr.isRevealed && (
+              <>
+                <div>{card.answer}</div>
+                {curr.isRevealed && (
+                  <Button
+                    marginBottom="1rem"
+                    isDisabled={incorrect.includes(curr.idx)}
+                    onClick={() => handleIncorrect(curr.idx)}
+                  >
+                    Mark as incorrect
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+        ) : (
+          <>
+            <h2>No more cards</h2>
+            {incorrect.length > 0 ? (
+              <>
+                <div>Incorrect Kanji:</div>
+                <ul>
+                  {incorrect.map((idx) => (
+                    <li key={idx}>
+                      {deck[idx][0]} - {deck[idx][1]}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+            <Link to="/">
+              <Button>Exit</Button>
+            </Link>
+          </>
+        )}
+      </Container>
+      <div>
+        {!card.isOver && curr.isRevealed && kanji ? (
+          <img
+            className="mx-auto"
+            src={kanjiToStrokeImgName(kanji)}
+            alt={kanji}
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
