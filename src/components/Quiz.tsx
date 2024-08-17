@@ -1,6 +1,11 @@
 import { shuffleArray } from "../utils/shuffleArray.ts";
 import { useMemo, useState } from "react";
-import { Button, ButtonGroup, Container } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
 import { Link, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
@@ -133,11 +138,21 @@ export const Quiz = () => {
       </Container>
       <div>
         {!card.isOver && curr.isRevealed && kanji ? (
-          <img
-            className="mx-auto"
-            src={kanjiToStrokeImgName(kanji)}
-            alt={kanji}
-          />
+          <>
+            <Container pb="2">
+              <ChakraLink
+                isExternal
+                href={`https://www.wanikani.com/kanji/${kanji}`}
+              >
+                See WaniKani page
+              </ChakraLink>
+            </Container>
+            <img
+              className="mx-auto"
+              src={kanjiToStrokeImgName(kanji)}
+              alt={kanji}
+            />
+          </>
         ) : null}
       </div>
 
