@@ -15,6 +15,72 @@ import {
 } from "../const/katakana.ts";
 import { useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
+import { KanjiList } from "../types.ts";
+
+type NavItem =
+  | {
+      link: `/${string}`;
+      data: KanjiList;
+      label: string;
+    }
+  | {
+      divider: true;
+    };
+
+const nav: NavItem[] = [
+  {
+    link: "/n5",
+    data: kanjiN5,
+    label: "N5 kanji",
+  },
+  {
+    link: "/n4",
+    data: kanjiN4,
+    label: "N4 kanji",
+  },
+  {
+    link: "/n3",
+    data: kanjiN3,
+    label: "N3 kanji",
+  },
+  {
+    link: "/n2",
+    data: kanjiN2,
+    label: "N2 kanji",
+  },
+  {
+    link: "/n1",
+    data: kanjiN1,
+    label: "N1 kanji",
+  },
+  {
+    divider: true,
+  },
+  {
+    link: "/hiragana-with-dakuten",
+    data: hiraganaWithDakuten,
+    label: "Hiragana with dakuten",
+  },
+  {
+    link: "/hiragana-without-dakuten",
+    data: hiraganaWithoutDakuten,
+    label: "Hiragana without dakuten",
+  },
+  {
+    divider: true,
+  },
+  {
+    link: "/katakana-with-dakuten",
+    data: katakanaWithDakuten,
+    label: "Katakana with dakuten",
+  },
+  {
+    link: "/katakana-without-dakuten",
+    data: katakanaWithoutDakuten,
+    label: "Katakana without dakuten",
+  },
+  { divider: true },
+];
 
 export const StartScreen = () => {
   const [shouldShuffle, setShouldShuffle] = useState(true);
@@ -22,40 +88,17 @@ export const StartScreen = () => {
   return (
     <Container>
       <h1>Kanji Test</h1>
-      <Link to="/n5" state={state}>
-        <Button>N5 kanji ({kanjiN5.length})</Button>
-      </Link>
-      <Link to="/n4" state={state}>
-        <Button>N4 kanji ({kanjiN4.length})</Button>
-      </Link>
-      <Link to="/n3" state={state}>
-        <Button>N3 kanji ({kanjiN3.length})</Button>
-      </Link>
-      <Link to="/n2" state={state}>
-        <Button>N2 kanji ({kanjiN2.length})</Button>
-      </Link>
-      <Link to="/n1" state={state}>
-        <Button>N1 kanji ({kanjiN1.length})</Button>
-      </Link>
-      <hr />
-      <Link to="/hiragana-with-dakuten" state={state}>
-        <Button>Hiragana with dakuten ({hiraganaWithDakuten.length})</Button>
-      </Link>
-      <Link to="/hiragana-without-dakuten" state={state}>
-        <Button>
-          Hiragana without dakuten ({hiraganaWithoutDakuten.length})
-        </Button>
-      </Link>
-      <hr />
-      <Link to="/katakana-with-dakuten" state={state}>
-        <Button>Katakana with dakuten ({katakanaWithDakuten.length})</Button>
-      </Link>
-      <Link to="/katakana-without-dakuten" state={state}>
-        <Button>
-          Katakana without dakuten ({katakanaWithoutDakuten.length})
-        </Button>
-      </Link>
-      <hr />
+      {nav.map((item, index) =>
+        "divider" in item ? (
+          <hr key={index} />
+        ) : (
+          <Link to={item.link} state={state} key={index}>
+            <Button>
+              {item.label} ({item.data.length})
+            </Button>
+          </Link>
+        ),
+      )}
       <Checkbox
         isChecked={shouldShuffle}
         onChange={(e) => setShouldShuffle(e.target.checked)}
