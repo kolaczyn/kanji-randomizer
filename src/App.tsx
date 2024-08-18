@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StartScreen } from "./components/StartScreen.tsx";
-import { Quiz } from "./components/Quiz.tsx";
+import { Quiz } from "./features/Quiz/Quiz.tsx";
 
 import "@fontsource/noto-serif-jp/500.css";
 

@@ -1,4 +1,4 @@
-import { shuffleArray } from "../utils/shuffleArray.ts";
+import { shuffleArray } from "../../utils/shuffleArray.ts";
 import { useMemo, useState } from "react";
 import {
   Box,
@@ -8,14 +8,14 @@ import {
   Image,
   Link as ChakraLink,
 } from "@chakra-ui/react";
-import { useEventListeners } from "../hooks/useEventListeners.ts";
+import { useEventListeners } from "../../hooks/useEventListeners.ts";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { getDeck } from "../utils/getDeck.ts";
-import { KanjiList, Level, RouterState } from "../types.ts";
-import { Settings } from "./Settings.tsx";
-import { useSettings } from "../hooks/useSettings.ts";
-import { kanjiToStrokeImgName } from "../utils/kanjiToStrokeImgName.ts";
-import { IncorrectKanji } from "./IncorrectKanji.tsx";
+import { getDeck } from "../../utils/getDeck.ts";
+import { KanjiList, Level, RouterState } from "../../types.ts";
+import { Settings } from "../../components/Settings.tsx";
+import { useSettings } from "../../hooks/useSettings.ts";
+import { kanjiToStrokeImgName } from "./utils/kanjiToStrokeImgName.ts";
+import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
 
 export const Quiz = () => {
   const params = useParams();
