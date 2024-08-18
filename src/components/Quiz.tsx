@@ -11,7 +11,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
 import { KanjiList, Level, RouterState } from "../types.ts";
 import { Settings } from "./Settings.tsx";
-import { useSettings } from "../hooks/useSettings.tsx";
+import { useSettings } from "../hooks/useSettings.ts";
 import { kanjiToStrokeImgName } from "../utils/kanjiToStrokeImgName.ts";
 import { IncorrectKanji } from "./IncorrectKanji.tsx";
 

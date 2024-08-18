@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSettings } from "../hooks/useSettings.tsx";
+import { useSettings } from "../hooks/useSettings.ts";
 
 export const Settings = () => {
   const [settings, setSettings] = useSettings();

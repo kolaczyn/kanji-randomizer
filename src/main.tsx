@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
 import { App } from "./App.tsx";
-import { SettingsProvider } from "./hooks/useSettings.tsx";
+import { SettingsProvider } from "./components/SettingsProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
