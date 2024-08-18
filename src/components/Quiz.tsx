@@ -18,6 +18,7 @@ import { IncorrectKanji } from "./IncorrectKanji.tsx";
 export const Quiz = () => {
   const params = useParams();
   const lvl = params.level as Level;
+  const isKanji = lvl.startsWith("n");
   const [settings] = useSettings();
 
   const [isIncorrectShowed, setIsIncorrectShowed] = useState(false);
@@ -137,7 +138,7 @@ export const Quiz = () => {
         )}
       </Container>
       <div>
-        {!card.isOver && curr.isRevealed && kanji ? (
+        {!card.isOver && curr.isRevealed && kanji && isKanji ? (
           <>
             <Container pb="2">
               <ChakraLink
