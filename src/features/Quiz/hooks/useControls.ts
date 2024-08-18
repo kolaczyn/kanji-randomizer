@@ -1,7 +1,15 @@
 import { useContext, useState } from "react";
 import { DeckContext } from "../context/DeckContext.tsx";
 
-export const useControls = () => {
+export type UseControlsReturn = {
+  handlePrevious: () => void;
+  curr: { idx: number; isRevealed: boolean };
+  handleNext: () => void;
+  isFirst: boolean;
+  isLast: boolean;
+};
+
+export const useControls = (): UseControlsReturn => {
   const deck = useContext(DeckContext);
   const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
     idx: 0,

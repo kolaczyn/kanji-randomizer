@@ -1,21 +1,15 @@
 import { useContext, useMemo, useState } from "react";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Container,
-  Image,
-  Link as ChakraLink,
-} from "@chakra-ui/react";
+import { Button, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../../hooks/useEventListeners.ts";
 import { Link, useParams } from "react-router-dom";
 import { Level } from "../../types.ts";
-import { Settings } from "../../components/Settings.tsx";
 import { useSettings } from "../../hooks/useSettings.ts";
-import { kanjiToStrokeImgName } from "./utils/kanjiToStrokeImgName.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
 import { useControls } from "./hooks/useControls.ts";
 import { DeckContext } from "./context/DeckContext.tsx";
+import { QuizControls } from "./components/QuizControls.tsx";
+import { QuizCard } from "./components/QuizCard.tsx";
+import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";
 
 export const Quiz = () => {
   const params = useParams();
@@ -34,7 +28,8 @@ export const Quiz = () => {
     }
   };
 
-  const { handlePrevious, handleNext, curr, isFirst, isLast } = useControls();
+  const controls = useControls();
+  const { handlePrevious, handleNext, curr } = controls;
 
   useEventListeners({
     onPrevious: handlePrevious,
@@ -57,41 +52,21 @@ export const Quiz = () => {
     };
   }, [curr.idx, deck.length, explanation, kanji, settings.showFirst]);
 
+  const shouldAdditionalInfo: boolean =
+    !card.isOver && curr.isRevealed && !!kanji && isKanji;
+
   return (
     <>
       <Container>
-        <ButtonGroup alignItems="center">
-          <Button isDisabled={isFirst} onClick={handlePrevious}>
-            Previous
-          </Button>
-          <span>
-            {/*Math.min prevents text like "10 of 9" from appearing */}
-            {Math.min(curr.idx + 1, deck.length)} of {deck.length}
-          </span>
-          <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
-            Next
-          </Button>
-          <Settings />
-        </ButtonGroup>
+        <QuizControls {...controls} />
         <br />
         {!card.isOver ? (
-          <div className="quiz">
-            <Box fontSize="2rem">{card.question}</Box>
-            {curr.isRevealed && (
-              <>
-                <div>{card.answer}</div>
-                {curr.isRevealed && (
-                  <Button
-                    marginBottom="1rem"
-                    onClick={() => handleIncorrect(curr.idx)}
-                  >
-                    Mark as{" "}
-                    {incorrect.includes(curr.idx) ? "correct" : "incorrect"}
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
+          <QuizCard
+            card={card}
+            curr={curr}
+            handleIncorrect={handleIncorrect}
+            incorrect={incorrect}
+          />
         ) : (
           <>
             <h2>No more cards</h2>
@@ -105,18 +80,8 @@ export const Quiz = () => {
         )}
       </Container>
       <div>
-        {!card.isOver && curr.isRevealed && kanji && isKanji ? (
-          <>
-            <Container pb="2">
-              <ChakraLink
-                isExternal
-                href={`https://www.wanikani.com/kanji/${kanji}`}
-              >
-                See WaniKani page
-              </ChakraLink>
-            </Container>
-            <Image mx="auto" src={kanjiToStrokeImgName(kanji)} alt={kanji} />
-          </>
+        {shouldAdditionalInfo ? (
+          <CharacterAdditionalInfo kanji={kanji!} />
         ) : null}
       </div>
 
