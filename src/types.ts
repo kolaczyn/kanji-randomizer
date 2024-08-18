@@ -11,3 +11,7 @@ export type Level =
 
 // It's also used for hiragana and katakana, but whatever :p
 export type KanjiList = [string, string][];
+
+export type RouterState = {
+  shouldShuffle: boolean;
+};
