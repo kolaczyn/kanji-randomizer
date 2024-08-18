@@ -1,9 +1,11 @@
 import { shuffleArray } from "../utils/shuffleArray.ts";
 import { useMemo, useState } from "react";
 import {
+  Box,
   Button,
   ButtonGroup,
   Container,
+  Image,
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
@@ -94,10 +96,10 @@ export const Quiz = () => {
   return (
     <>
       <Container>
-        <ButtonGroup>
+        <ButtonGroup alignItems="center">
           <Button isDisabled={isFirst} onClick={handlePrevious}>
             Previous
-          </Button>{" "}
+          </Button>
           <span>
             {/*Math.min prevents text like "10 of 9" from appearing */}
             {Math.min(curr.idx + 1, deck.length)} of {deck.length}
@@ -113,7 +115,7 @@ export const Quiz = () => {
         <br />
         {!card.isOver ? (
           <div className="quiz">
-            <div>{card.question}</div>
+            <Box fontSize="2rem">{card.question}</Box>
             {curr.isRevealed && (
               <>
                 <div>{card.answer}</div>
@@ -152,11 +154,7 @@ export const Quiz = () => {
                 See WaniKani page
               </ChakraLink>
             </Container>
-            <img
-              className="mx-auto"
-              src={kanjiToStrokeImgName(kanji)}
-              alt={kanji}
-            />
+            <Image mx="auto" src={kanjiToStrokeImgName(kanji)} alt={kanji} />
           </>
         ) : null}
       </div>

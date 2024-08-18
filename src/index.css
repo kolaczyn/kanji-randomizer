@@ -1,22 +1,4 @@
 body {
   font-family: 'Noto Serif JP', sans-serif !important;
   background-color: aliceblue;
-  color: navy;
-
-  font-size: 1.5rem;
-}
-
-button {
-  font-size: 1.5rem;
-
-}
-
-.quiz {
-  font-size: 2rem;
-}
-
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
 }
