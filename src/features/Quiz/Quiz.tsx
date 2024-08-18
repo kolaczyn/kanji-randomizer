@@ -1,5 +1,4 @@
-import { shuffleArray } from "../../utils/shuffleArray.ts";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -9,25 +8,22 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { useEventListeners } from "../../hooks/useEventListeners.ts";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { getDeck } from "../../utils/getDeck.ts";
-import { KanjiList, Level, RouterState } from "../../types.ts";
+import { Link, useParams } from "react-router-dom";
+import { Level } from "../../types.ts";
 import { Settings } from "../../components/Settings.tsx";
 import { useSettings } from "../../hooks/useSettings.ts";
 import { kanjiToStrokeImgName } from "./utils/kanjiToStrokeImgName.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
+import { useControls } from "./hooks/useControls.ts";
+import { DeckContext } from "./context/DeckContext.tsx";
 
 export const Quiz = () => {
   const params = useParams();
-  const { shouldShuffle } = useLocation().state as RouterState;
   const lvl = params.level as Level;
+  const deck = useContext(DeckContext);
   const isKanji = lvl.startsWith("n");
   const [settings] = useSettings();
 
-  const deck = useMemo<KanjiList>(() => {
-    const sortedDeck = getDeck(lvl)!;
-    return shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
-  }, [lvl, shouldShuffle]);
   const [incorrect, setIncorrect] = useState<number[]>([]);
 
   const handleIncorrect = (idx: number) => {
@@ -38,35 +34,7 @@ export const Quiz = () => {
     }
   };
 
-  const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
-    idx: 0,
-    isRevealed: false,
-  });
-
-  const isFirst = curr.idx === 0;
-  const isLast = curr.idx > deck.length - 1;
-
-  const handlePrevious = () => {
-    // setIdx((prev) => Math.max(prev - 1, 0));
-    setCurr((prev) => ({
-      idx: Math.max(prev.idx - 1, 0),
-      isRevealed: false,
-    }));
-  };
-
-  const handleNext = () => {
-    setCurr((prev) =>
-      prev.isRevealed
-        ? {
-            idx: Math.min(prev.idx + 1, deck.length),
-            isRevealed: false,
-          }
-        : {
-            idx: prev.idx,
-            isRevealed: true,
-          },
-    );
-  };
+  const { handlePrevious, handleNext, curr, isFirst, isLast } = useControls();
 
   useEventListeners({
     onPrevious: handlePrevious,
@@ -80,16 +48,14 @@ export const Quiz = () => {
     return [kanji, explanation];
   }, [curr.idx, deck]);
 
-  const getCard = () => {
+  const card = useMemo(() => {
     const showKanji = settings.showFirst === "kanji";
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
       isOver: curr.idx >= deck.length,
     };
-  };
-
-  const card = getCard();
+  }, [curr.idx, deck.length, explanation, kanji, settings.showFirst]);
 
   return (
     <>
