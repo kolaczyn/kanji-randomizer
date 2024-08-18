@@ -24,8 +24,6 @@ export const Quiz = () => {
   const isKanji = lvl.startsWith("n");
   const [settings] = useSettings();
 
-  const [isIncorrectShowed, setIsIncorrectShowed] = useState(false);
-
   const deck = useMemo<KanjiList>(() => {
     const sortedDeck = getDeck(lvl)!;
     return shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
@@ -107,9 +105,6 @@ export const Quiz = () => {
           <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
             Next
           </Button>
-          <Button onClick={() => setIsIncorrectShowed((prev) => !prev)}>
-            {isIncorrectShowed ? "Hide" : "Show"} incorrect
-          </Button>
           <Settings />
         </ButtonGroup>
         <br />
@@ -159,7 +154,7 @@ export const Quiz = () => {
         ) : null}
       </div>
 
-      {isIncorrectShowed && (
+      {settings.showIncorrect && (
         <>
           <hr />
           <Container>

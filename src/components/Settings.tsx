@@ -1,6 +1,6 @@
 import {
+  Box,
   Button,
-  ButtonGroup,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -20,31 +20,44 @@ export const Settings = () => {
   };
 
   const showKanji = settings.showFirst === "kanji";
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button onClick={onOpen}>More</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ButtonGroup>
-              <Button onClick={handleReset}>Reset</Button>
-              <Link to="/">
-                <Button>Exit</Button>
-              </Link>
-              <Button
-                onClick={() =>
-                  setSettings({
-                    showFirst: showKanji ? "definition" : "kanji",
-                  })
-                }
-              >
-                {showKanji ? "Show kanji" : "Show explanation"}
-              </Button>
-            </ButtonGroup>
+            <Button onClick={handleReset}>Reset</Button>
+            <Link to="/">
+              <Button colorScheme="red">Exit (abandon progress)</Button>
+            </Link>
+            <Box my="2">
+              <hr />
+            </Box>
+            <Button
+              onClick={() =>
+                setSettings({
+                  showIncorrect: !settings.showIncorrect,
+                  showFirst: settings.showFirst,
+                })
+              }
+            >
+              {settings.showIncorrect ? "Hide incorrect" : "Show incorrect"}
+            </Button>
+            <Button
+              onClick={() =>
+                setSettings({
+                  showIncorrect: settings.showIncorrect,
+                  showFirst: showKanji ? "definition" : "kanji",
+                })
+              }
+            >
+              {showKanji ? "Show kanji" : "Show explanation"}
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -4,10 +4,12 @@ import { SettingsContext } from "../components/SettingsProvider.tsx";
 const KEY = "appSettings";
 
 const defaultSettings: AppSettings = {
+  showIncorrect: false,
   showFirst: "kanji",
 };
 
 export type AppSettings = {
+  showIncorrect: boolean;
   showFirst: "kanji" | "definition";
 };
 
