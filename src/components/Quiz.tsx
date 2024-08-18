@@ -7,9 +7,9 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { useEventListeners } from "../hooks/useEventListeners.ts";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getDeck } from "../utils/getDeck.ts";
-import { KanjiList, Level } from "../types.ts";
+import { KanjiList, Level, RouterState } from "../types.ts";
 import { Settings } from "./Settings.tsx";
 import { useSettings } from "../hooks/useSettings.tsx";
 import { kanjiToStrokeImgName } from "../utils/kanjiToStrokeImgName.ts";
@@ -17,12 +17,17 @@ import { IncorrectKanji } from "./IncorrectKanji.tsx";
 
 export const Quiz = () => {
   const params = useParams();
+  const { shouldShuffle } = useLocation().state as RouterState;
   const lvl = params.level as Level;
+  const isKanji = lvl.startsWith("n");
   const [settings] = useSettings();
 
   const [isIncorrectShowed, setIsIncorrectShowed] = useState(false);
 
-  const deck = useMemo<KanjiList>(() => shuffleArray(getDeck(lvl)!), [lvl]);
+  const deck = useMemo<KanjiList>(() => {
+    const sortedDeck = getDeck(lvl)!;
+    return shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
+  }, [lvl, shouldShuffle]);
   const [incorrect, setIncorrect] = useState<number[]>([]);
 
   const handleIncorrect = (idx: number) => {
@@ -137,7 +142,7 @@ export const Quiz = () => {
         )}
       </Container>
       <div>
-        {!card.isOver && curr.isRevealed && kanji ? (
+        {!card.isOver && curr.isRevealed && kanji && isKanji ? (
           <>
             <Container pb="2">
               <ChakraLink
