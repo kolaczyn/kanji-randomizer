@@ -128,7 +128,7 @@ export const Quiz = () => {
           <>
             <h2>No more cards</h2>
             {incorrect.length > 0 ? (
-              <IncorrectKanji incorrect={incorrect} deck={deck} />
+              <IncorrectKanji incorrect={incorrect} deck={deck} curr={curr} />
             ) : null}
             <Link to="/">
               <Button>Exit</Button>
@@ -160,7 +160,7 @@ export const Quiz = () => {
         <>
           <hr />
           <Container>
-            <IncorrectKanji incorrect={incorrect} deck={deck} />
+            <IncorrectKanji incorrect={incorrect} deck={deck} curr={curr} />
           </Container>
         </>
       )}
