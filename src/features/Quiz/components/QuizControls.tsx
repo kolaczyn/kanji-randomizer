@@ -1,17 +1,12 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Settings } from "../../../components/Settings.tsx";
-import { UseControlsReturn } from "../hooks/useControls.ts";
+import { useControls } from "../hooks/useControls.ts";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
-export const QuizControls = ({
-  curr,
-  isFirst,
-  isLast,
-  handlePrevious,
-  handleNext,
-}: UseControlsReturn) => {
-  const [{ deck }] = useAtom(deckAtom);
+export const QuizControls = () => {
+  const [{ deck, idx }] = useAtom(deckAtom);
+  const { handlePrevious, handleNext, isFirst, isLast } = useControls();
   return (
     <ButtonGroup alignItems="center">
       <Button isDisabled={isFirst} onClick={handlePrevious}>
@@ -19,7 +14,7 @@ export const QuizControls = ({
       </Button>
       <span>
         {/*Math.min prevents text like "10 of 9" from appearing */}
-        {Math.min(curr.idx + 1, deck.length)} of {deck.length}
+        {Math.min(idx + 1, deck.length)} of {deck.length}
       </span>
       <Button colorScheme="green" isDisabled={isLast} onClick={handleNext}>
         Next

@@ -45,15 +45,14 @@ export const Quiz = () => {
   const [settings] = useSettings();
   const [state, setState] = useAtom(deckAtom);
 
-  const controls = useControls();
-  const { handlePrevious, handleNext, curr } = controls;
+  const { handlePrevious, handleNext } = useControls();
 
   const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
-    const element = state.deck[curr.idx];
+    const element = state.deck[state.idx];
     if (element == null) return [null, null];
     const [kanji, explanation] = element;
     return [kanji, explanation];
-  }, [curr.idx, state.deck]);
+  }, [state.idx, state.deck]);
 
   const handleToggleIncorrect = (idx: number) => {
     if (state.incorrect.includes(idx)) {
@@ -70,7 +69,7 @@ export const Quiz = () => {
   useEventListeners({
     onPrevious: handlePrevious,
     onNext: handleNext,
-    onIncorrect: () => handleToggleIncorrect(curr.idx),
+    onIncorrect: () => handleToggleIncorrect(state.idx),
   });
 
   const card = useMemo(() => {
@@ -78,35 +77,24 @@ export const Quiz = () => {
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
-      isOver: curr.idx >= state.deck.length,
+      isOver: state.idx >= state.deck.length,
     };
-  }, [curr.idx, state.deck.length, explanation, kanji, settings.showFirst]);
+  }, [state.idx, state.deck.length, explanation, kanji, settings.showFirst]);
 
   const shouldShowAdditionalInfo: boolean =
-    !card.isOver && curr.isRevealed && !!kanji && isKanji;
+    !card.isOver && state.isRevealed && !!kanji && isKanji;
 
   return (
     <>
       <Container>
-        <QuizControls {...controls} />
+        <QuizControls />
         <br />
         {!card.isOver ? (
-          <QuizCard
-            card={card}
-            curr={curr}
-            handleIncorrect={handleToggleIncorrect}
-            incorrect={state.incorrect}
-          />
+          <QuizCard card={card} handleIncorrect={handleToggleIncorrect} />
         ) : (
           <>
             <h2>No more cards</h2>
-            {state.incorrect.length > 0 ? (
-              <IncorrectKanji
-                incorrect={state.incorrect}
-                deck={state.deck}
-                curr={curr}
-              />
-            ) : null}
+            {state.incorrect.length > 0 ? <IncorrectKanji /> : null}
             <Link to="/">
               <Button>Exit</Button>
             </Link>
@@ -123,11 +111,7 @@ export const Quiz = () => {
         <>
           <hr />
           <Container>
-            <IncorrectKanji
-              incorrect={state.incorrect}
-              deck={state.deck}
-              curr={curr}
-            />
+            <IncorrectKanji />
           </Container>
         </>
       )}

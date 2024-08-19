@@ -1,16 +1,8 @@
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
-export type UseControlsReturn = {
-  handlePrevious: () => void;
-  curr: { idx: number; isRevealed: boolean };
-  handleNext: () => void;
-  isFirst: boolean;
-  isLast: boolean;
-};
-
-export const useControls = (): UseControlsReturn => {
-  const [{ deck, idx, isRevealed }, setState] = useAtom(deckAtom);
+export const useControls = () => {
+  const [{ deck, idx }, setState] = useAtom(deckAtom);
 
   const handlePrevious = () => {
     setState((draft) => {
@@ -35,10 +27,6 @@ export const useControls = (): UseControlsReturn => {
 
   return {
     handlePrevious,
-    curr: {
-      idx,
-      isRevealed,
-    },
     handleNext,
     isFirst,
     isLast,
