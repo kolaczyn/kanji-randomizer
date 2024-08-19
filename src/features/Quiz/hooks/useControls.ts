@@ -19,7 +19,7 @@ export const useControls = (): UseControlsReturn => {
   const handlePrevious = () => {
     setCurr((prev) => ({
       idx: Math.max(prev.idx - 1, 0),
-      isRevealed: false,
+      isRevealed: true,
     }));
   };
 
