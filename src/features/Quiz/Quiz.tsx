@@ -1,8 +1,8 @@
 import { useAtom } from "jotai/react";
 import { useEffect, useMemo, useState } from "react";
-import { Button, Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../../hooks/useEventListeners.ts";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Level, RouterState } from "../../types.ts";
 import { useSettings } from "../../hooks/useSettings.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
@@ -14,6 +14,7 @@ import { deckAtom, deckAtomKanjiExplanation } from "../../state/deckAtom.ts";
 import { getDeck } from "../../utils/getDeck.ts";
 import { shuffleArray } from "../../utils/shuffleArray.ts";
 import { useAppRouteData } from "../../hooks/useAppRouteData.ts";
+import { Endgame } from "./components/Endgame.tsx";
 
 export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
@@ -43,28 +44,16 @@ export const QuizWrapper = () => {
 export const Quiz = () => {
   const { isKanji } = useAppRouteData();
   const [settings] = useSettings();
-  const [state, setState] = useAtom(deckAtom);
+  const [state] = useAtom(deckAtom);
 
-  const { handlePrevious, handleNext } = useControls();
+  const { handlePrevious, handleNext, handleToggleIncorrect } = useControls();
 
   const [[kanji, explanation]] = useAtom(deckAtomKanjiExplanation);
-
-  const handleToggleIncorrect = (idx: number) => {
-    if (state.incorrect.includes(idx)) {
-      setState((draft) => {
-        draft.incorrect = draft.incorrect.filter((i) => i !== idx);
-      });
-    } else {
-      setState((draft) => {
-        draft.incorrect = [...draft.incorrect, idx];
-      });
-    }
-  };
 
   useEventListeners({
     onPrevious: handlePrevious,
     onNext: handleNext,
-    onIncorrect: () => handleToggleIncorrect(state.idx),
+    onIncorrect: handleToggleIncorrect,
   });
 
   const card = useMemo(() => {
@@ -77,30 +66,24 @@ export const Quiz = () => {
   }, [state.idx, state.deck.length, explanation, kanji, settings.showFirst]);
 
   const shouldShowAdditionalInfo: boolean =
-    !card.isOver && state.isRevealed && !!kanji && isKanji;
+    !card.isOver &&
+    state.isRevealed &&
+    // make sure the character exists (we may be out of range)
+    !!kanji &&
+    // there is no stroke order for hiragana and katakana
+    isKanji;
 
   return (
     <>
       <Container>
         <QuizControls />
-        {!card.isOver ? (
-          <QuizCard card={card} handleIncorrect={handleToggleIncorrect} />
-        ) : (
-          <>
-            <h2>No more cards</h2>
-            {state.incorrect.length > 0 ? <IncorrectKanji /> : null}
-            <Link to="/">
-              <Button>Exit</Button>
-            </Link>
-          </>
-        )}
+        {card.isOver ? <Endgame /> : <QuizCard card={card} />}
       </Container>
-      <div>
+      <Box>
         {shouldShowAdditionalInfo ? (
           <CharacterAdditionalInfo kanji={kanji!} />
         ) : null}
-      </div>
-
+      </Box>
       {settings.showIncorrect && (
         <Container mt="4">
           <IncorrectKanji />

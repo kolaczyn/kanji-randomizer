@@ -2,7 +2,7 @@ import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
 export const useControls = () => {
-  const [{ deck, idx }, setState] = useAtom(deckAtom);
+  const [{ deck, idx, incorrect }, setState] = useAtom(deckAtom);
 
   const handlePrevious = () => {
     setState((draft) => {
@@ -22,12 +22,25 @@ export const useControls = () => {
     });
   };
 
+  const handleToggleIncorrect = () => {
+    if (incorrect.includes(idx)) {
+      setState((draft) => {
+        draft.incorrect = draft.incorrect.filter((i) => i !== idx);
+      });
+    } else {
+      setState((draft) => {
+        draft.incorrect = [...draft.incorrect, idx];
+      });
+    }
+  };
+
   const isFirst = idx === 0;
   const isLast = idx > deck.length - 1;
 
   return {
     handlePrevious,
     handleNext,
+    handleToggleIncorrect,
     isFirst,
     isLast,
   };
