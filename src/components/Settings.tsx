@@ -12,15 +12,11 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
 import { ShowFirst, useSettings } from "../hooks/useSettings.ts";
+import { AbandonProgress } from "./AbandonProgress.tsx";
 
 export const Settings = () => {
   const [settings, setSettings] = useSettings();
-  const navigate = useNavigate();
-  const handleReset = () => {
-    navigate(0);
-  };
 
   const handleShowIncorrectChange = (value: string) => {
     setSettings({
@@ -46,10 +42,7 @@ export const Settings = () => {
           <ModalHeader>Settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Button onClick={handleReset}>Reset</Button>
-            <Link to="/">
-              <Button colorScheme="red">Exit (abandon progress)</Button>
-            </Link>
+            <AbandonProgress />
             <Box my="4" />
             <RadioGroup
               value={settings.showIncorrect ? "true" : "false"}
