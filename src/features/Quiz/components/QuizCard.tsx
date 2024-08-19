@@ -1,25 +1,23 @@
 import { Box, Button } from "@chakra-ui/react";
+import { useAtom } from "jotai/react";
+import { deckAtom } from "../../../state/deckAtom.ts";
 
 type Props = {
   card: { question: string | null; answer: string | null };
-  curr: { idx: number; isRevealed: boolean };
   handleIncorrect: (idx: number) => void;
-  incorrect: number[];
 };
 
-export const QuizCard = ({ incorrect, handleIncorrect, card, curr }: Props) => {
+export const QuizCard = ({ card, handleIncorrect }: Props) => {
+  const [{ idx, incorrect, isRevealed }] = useAtom(deckAtom);
   return (
     <Box>
       <Box fontSize="2rem">{card.question}</Box>
-      {curr.isRevealed && (
+      {isRevealed && (
         <>
           <div>{card.answer}</div>
-          {curr.isRevealed && (
-            <Button
-              marginBottom="1rem"
-              onClick={() => handleIncorrect(curr.idx)}
-            >
-              Mark as {incorrect.includes(curr.idx) ? "correct" : "incorrect"}
+          {isRevealed && (
+            <Button marginBottom="1rem" onClick={() => handleIncorrect(idx)}>
+              Mark as {incorrect.includes(idx) ? "correct" : "incorrect"}
             </Button>
           )}
         </>
