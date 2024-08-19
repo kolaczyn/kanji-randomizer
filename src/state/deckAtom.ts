@@ -4,11 +4,13 @@ import { KanjiList } from "../types.ts";
 export type DeckAtomState = {
   deck: KanjiList;
   incorrect: number[];
-  isIncorrect: boolean;
+  idx: number;
+  isRevealed: boolean;
 };
 
 export const deckAtom = atomWithImmer<DeckAtomState>({
   deck: [],
   incorrect: [],
-  isIncorrect: false,
+  idx: 0,
+  isRevealed: false,
 });

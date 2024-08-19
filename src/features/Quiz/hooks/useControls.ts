@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
@@ -11,39 +10,35 @@ export type UseControlsReturn = {
 };
 
 export const useControls = (): UseControlsReturn => {
-  const [{ deck }] = useAtom(deckAtom);
-  const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
-    idx: 0,
-    isRevealed: false,
-  });
+  const [{ deck, idx, isRevealed }, setState] = useAtom(deckAtom);
 
   const handlePrevious = () => {
-    setCurr((prev) => ({
-      idx: Math.max(prev.idx - 1, 0),
-      isRevealed: true,
-    }));
+    setState((draft) => {
+      draft.idx = Math.max(draft.idx - 1, 0);
+      draft.isRevealed = true;
+    });
   };
 
   const handleNext = () => {
-    setCurr((prev) =>
-      prev.isRevealed
-        ? {
-            idx: Math.min(prev.idx + 1, deck.length),
-            isRevealed: false,
-          }
-        : {
-            idx: prev.idx,
-            isRevealed: true,
-          },
-    );
+    setState((draft) => {
+      if (draft.isRevealed) {
+        draft.idx = Math.min(draft.idx + 1, deck.length);
+        draft.isRevealed = false;
+      } else {
+        draft.isRevealed = true;
+      }
+    });
   };
 
-  const isFirst = curr.idx === 0;
-  const isLast = curr.idx > deck.length - 1;
+  const isFirst = idx === 0;
+  const isLast = idx > deck.length - 1;
 
   return {
     handlePrevious,
-    curr,
+    curr: {
+      idx,
+      isRevealed,
+    },
     handleNext,
     isFirst,
     isLast,

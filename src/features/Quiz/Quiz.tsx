@@ -13,6 +13,7 @@ import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.ts
 import { deckAtom } from "../../state/deckAtom.ts";
 import { getDeck } from "../../utils/getDeck.ts";
 import { shuffleArray } from "../../utils/shuffleArray.ts";
+import { useAppRouteData } from "../../hooks/useAppRouteData.ts";
 
 export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
@@ -28,10 +29,9 @@ export const QuizWrapper = () => {
     const sortedDeck = getDeck(lvl)!;
     const finalDeck = shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
 
-    setDeck({
-      deck: finalDeck,
-      incorrect: [],
-      isIncorrect: false,
+    setDeck((draft) => {
+      draft.deck = finalDeck;
+      draft.incorrect = [];
     });
 
     setIsInit(true);
@@ -41,13 +41,21 @@ export const QuizWrapper = () => {
 };
 
 export const Quiz = () => {
-  const params = useParams();
-  const lvl = params.level as Level;
-  const isKanji = lvl.startsWith("n");
+  const { isKanji } = useAppRouteData();
   const [settings] = useSettings();
   const [state, setState] = useAtom(deckAtom);
 
-  const handleIncorrect = (idx: number) => {
+  const controls = useControls();
+  const { handlePrevious, handleNext, curr } = controls;
+
+  const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
+    const element = state.deck[curr.idx];
+    if (element == null) return [null, null];
+    const [kanji, explanation] = element;
+    return [kanji, explanation];
+  }, [curr.idx, state.deck]);
+
+  const handleToggleIncorrect = (idx: number) => {
     if (state.incorrect.includes(idx)) {
       setState((draft) => {
         draft.incorrect = draft.incorrect.filter((i) => i !== idx);
@@ -59,20 +67,11 @@ export const Quiz = () => {
     }
   };
 
-  const controls = useControls();
-  const { handlePrevious, handleNext, curr } = controls;
-
   useEventListeners({
     onPrevious: handlePrevious,
     onNext: handleNext,
+    onIncorrect: () => handleToggleIncorrect(curr.idx),
   });
-
-  const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
-    const element = state.deck[curr.idx];
-    if (element == null) return [null, null];
-    const [kanji, explanation] = element;
-    return [kanji, explanation];
-  }, [curr.idx, state.deck]);
 
   const card = useMemo(() => {
     const showKanji = settings.showFirst === "kanji";
@@ -95,7 +94,7 @@ export const Quiz = () => {
           <QuizCard
             card={card}
             curr={curr}
-            handleIncorrect={handleIncorrect}
+            handleIncorrect={handleToggleIncorrect}
             incorrect={state.incorrect}
           />
         ) : (
