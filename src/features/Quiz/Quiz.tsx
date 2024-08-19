@@ -10,7 +10,7 @@ import { useControls } from "./hooks/useControls.ts";
 import { QuizControls } from "./components/QuizControls.tsx";
 import { QuizCard } from "./components/QuizCard.tsx";
 import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";
-import { deckAtom } from "../../state/deckAtom.ts";
+import { deckAtom, deckAtomKanjiExplanation } from "../../state/deckAtom.ts";
 import { getDeck } from "../../utils/getDeck.ts";
 import { shuffleArray } from "../../utils/shuffleArray.ts";
 import { useAppRouteData } from "../../hooks/useAppRouteData.ts";
@@ -47,12 +47,7 @@ export const Quiz = () => {
 
   const { handlePrevious, handleNext } = useControls();
 
-  const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
-    const element = state.deck[state.idx];
-    if (element == null) return [null, null];
-    const [kanji, explanation] = element;
-    return [kanji, explanation];
-  }, [state.idx, state.deck]);
+  const [[kanji, explanation]] = useAtom(deckAtomKanjiExplanation);
 
   const handleToggleIncorrect = (idx: number) => {
     if (state.incorrect.includes(idx)) {
