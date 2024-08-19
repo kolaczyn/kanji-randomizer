@@ -83,7 +83,6 @@ export const Quiz = () => {
     <>
       <Container>
         <QuizControls />
-        <br />
         {!card.isOver ? (
           <QuizCard card={card} handleIncorrect={handleToggleIncorrect} />
         ) : (
@@ -103,12 +102,9 @@ export const Quiz = () => {
       </div>
 
       {settings.showIncorrect && (
-        <>
-          <hr />
-          <Container>
-            <IncorrectKanji />
-          </Container>
-        </>
+        <Container mt="4">
+          <IncorrectKanji />
+        </Container>
       )}
     </>
   );

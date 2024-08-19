@@ -50,9 +50,7 @@ export const Settings = () => {
             <Link to="/">
               <Button colorScheme="red">Exit (abandon progress)</Button>
             </Link>
-            <Box my="2">
-              <hr />
-            </Box>
+            <Box my="4" />
             <RadioGroup
               value={settings.showIncorrect ? "true" : "false"}
               onChange={handleShowIncorrectChange}
@@ -62,7 +60,7 @@ export const Settings = () => {
                 <Radio value="true">Show incorrect</Radio>
               </Stack>
             </RadioGroup>
-            <hr />
+            <Box my="4" />
             <RadioGroup
               value={settings.showFirst}
               onChange={handleShowFirstChange}
