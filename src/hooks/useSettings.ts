@@ -8,9 +8,11 @@ const defaultSettings: AppSettings = {
   showFirst: "kanji",
 };
 
+export type ShowFirst = "kanji" | "definition";
+
 export type AppSettings = {
   showIncorrect: boolean;
-  showFirst: "kanji" | "definition";
+  showFirst: ShowFirst;
 };
 
 const readFromLocalStorage = (): AppSettings => {

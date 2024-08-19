@@ -7,10 +7,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
+  Stack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSettings } from "../hooks/useSettings.ts";
+import { ShowFirst, useSettings } from "../hooks/useSettings.ts";
 
 export const Settings = () => {
   const [settings, setSettings] = useSettings();
@@ -19,7 +22,19 @@ export const Settings = () => {
     navigate(0);
   };
 
-  const showKanji = settings.showFirst === "kanji";
+  const handleShowIncorrectChange = (value: string) => {
+    setSettings({
+      showIncorrect: value === "true",
+      showFirst: settings.showFirst,
+    });
+  };
+
+  const handleShowFirstChange = (value: ShowFirst) => {
+    setSettings({
+      showIncorrect: settings.showIncorrect,
+      showFirst: value,
+    });
+  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -38,26 +53,25 @@ export const Settings = () => {
             <Box my="2">
               <hr />
             </Box>
-            <Button
-              onClick={() =>
-                setSettings({
-                  showIncorrect: !settings.showIncorrect,
-                  showFirst: settings.showFirst,
-                })
-              }
+            <RadioGroup
+              value={settings.showIncorrect ? "true" : "false"}
+              onChange={handleShowIncorrectChange}
             >
-              {settings.showIncorrect ? "Hide incorrect" : "Show incorrect"}
-            </Button>
-            <Button
-              onClick={() =>
-                setSettings({
-                  showIncorrect: settings.showIncorrect,
-                  showFirst: showKanji ? "definition" : "kanji",
-                })
-              }
+              <Stack>
+                <Radio value="false">Hide incorrect</Radio>
+                <Radio value="true">Show incorrect</Radio>
+              </Stack>
+            </RadioGroup>
+            <hr />
+            <RadioGroup
+              value={settings.showFirst}
+              onChange={handleShowFirstChange}
             >
-              {showKanji ? "Show kanji" : "Show explanation"}
-            </Button>
+              <Stack>
+                <Radio value="kanji">Show kanji</Radio>
+                <Radio value="definition">Show explanation</Radio>
+              </Stack>
+            </RadioGroup>
           </ModalBody>
         </ModalContent>
       </Modal>

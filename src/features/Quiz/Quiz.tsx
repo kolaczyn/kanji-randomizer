@@ -52,7 +52,7 @@ export const Quiz = () => {
     };
   }, [curr.idx, deck.length, explanation, kanji, settings.showFirst]);
 
-  const shouldAdditionalInfo: boolean =
+  const shouldShowAdditionalInfo: boolean =
     !card.isOver && curr.isRevealed && !!kanji && isKanji;
 
   return (
@@ -80,7 +80,7 @@ export const Quiz = () => {
         )}
       </Container>
       <div>
-        {shouldAdditionalInfo ? (
+        {shouldShowAdditionalInfo ? (
           <CharacterAdditionalInfo kanji={kanji!} />
         ) : null}
       </div>
