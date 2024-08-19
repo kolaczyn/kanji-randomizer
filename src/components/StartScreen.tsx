@@ -1,5 +1,4 @@
 import { ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { Container } from "@chakra-ui/react";
 import { kanjiN5 } from "../const/kanjiN5.ts";
 import { kanjiN4 } from "../const/kanjiN4.ts";
@@ -17,6 +16,9 @@ import {
 import { useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
 import { KanjiList } from "../types.ts";
+import { Logo } from "./Logo.tsx";
+import { ChakraLink } from "./ChakraLink.tsx";
+import { RouterLink } from "./RouterLink.tsx";
 
 type NavItem = {
   link: `/${string}`;
@@ -78,19 +80,17 @@ const navKatakanaWithoutDakuten = {
 export const StartScreen = () => {
   const [shouldShuffle, setShouldShuffle] = useState(true);
   const state = { shouldShuffle };
+
   return (
     <Container>
-      <Text mb="2" as="h1" fontSize="2xl" fontWeight="bold">
-        Kanji Test
-      </Text>
-
+      <Logo />
       <Text fontSize="lg">Kanji</Text>
       <UnorderedList listStyleType="none">
         {[navN5, navN4, navN3, navN2, navN1].map((item, index) => (
           <ListItem key={index}>
-            <Link to={item.link} state={state}>
+            <ChakraLink as={RouterLink} to={item.link} state={state}>
               {item.label} ({item.data.length})
-            </Link>
+            </ChakraLink>
           </ListItem>
         ))}
       </UnorderedList>
@@ -103,9 +103,9 @@ export const StartScreen = () => {
           navKatakanaWithoutDakuten,
         ].map((item, index) => (
           <ListItem key={index}>
-            <Link to={item.link} state={state}>
+            <ChakraLink as={RouterLink} to={item.link} state={state}>
               {item.label} ({item.data.length})
-            </Link>
+            </ChakraLink>
           </ListItem>
         ))}
       </UnorderedList>

@@ -10,11 +10,23 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai/react";
+import { deckAtom } from "../state/deckAtom.ts";
 
 export const AbandonProgress = () => {
+  const [{ idx }] = useAtom(deckAtom);
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
+
+  const handleOpenModal = () => {
+    const shouldConfirm = idx > 0;
+    if (shouldConfirm) {
+      onOpen();
+    } else {
+      navigate("/");
+    }
+  };
 
   const handleNavigateAndClose = () => {
     navigate("/");
@@ -23,7 +35,7 @@ export const AbandonProgress = () => {
 
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
+      <Button colorScheme="red" onClick={handleOpenModal}>
         Exit (abandon progress)
       </Button>
 
