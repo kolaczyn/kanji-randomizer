@@ -1,30 +1,61 @@
-import { useContext, useMemo, useState } from "react";
+import { useAtom } from "jotai/react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Container } from "@chakra-ui/react";
 import { useEventListeners } from "../../hooks/useEventListeners.ts";
-import { Link, useParams } from "react-router-dom";
-import { Level } from "../../types.ts";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { Level, RouterState } from "../../types.ts";
 import { useSettings } from "../../hooks/useSettings.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
 import { useControls } from "./hooks/useControls.ts";
-import { DeckContext } from "./context/DeckContext.tsx";
 import { QuizControls } from "./components/QuizControls.tsx";
 import { QuizCard } from "./components/QuizCard.tsx";
 import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";
+import { deckAtom } from "../../state/deckAtom.ts";
+import { getDeck } from "../../utils/getDeck.ts";
+import { shuffleArray } from "../../utils/shuffleArray.ts";
+
+export const QuizWrapper = () => {
+  const [isInit, setIsInit] = useState(false);
+  const [, setDeck] = useAtom(deckAtom);
+
+  const { shouldShuffle } = useLocation().state as RouterState;
+  const params = useParams();
+  const lvl = params.level as Level;
+
+  // This should work for now, but in the future I should do something like this:
+  // https://jotai.org/docs/guides/initialize-atom-on-render
+  useEffect(() => {
+    const sortedDeck = getDeck(lvl)!;
+    const finalDeck = shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
+
+    setDeck({
+      deck: finalDeck,
+      incorrect: [],
+      isIncorrect: false,
+    });
+
+    setIsInit(true);
+  }, [lvl, setDeck, shouldShuffle]);
+
+  return isInit ? <Quiz /> : null;
+};
 
 export const Quiz = () => {
   const params = useParams();
   const lvl = params.level as Level;
-  const deck = useContext(DeckContext);
   const isKanji = lvl.startsWith("n");
   const [settings] = useSettings();
-
-  const [incorrect, setIncorrect] = useState<number[]>([]);
+  const [state, setState] = useAtom(deckAtom);
 
   const handleIncorrect = (idx: number) => {
-    if (incorrect.includes(idx)) {
-      setIncorrect((prev) => prev.filter((i) => i !== idx));
+    if (state.incorrect.includes(idx)) {
+      setState((draft) => {
+        draft.incorrect = draft.incorrect.filter((i) => i !== idx);
+      });
     } else {
-      setIncorrect((prev) => [...prev, idx]);
+      setState((draft) => {
+        draft.incorrect = [...draft.incorrect, idx];
+      });
     }
   };
 
@@ -37,20 +68,20 @@ export const Quiz = () => {
   });
 
   const [kanji, explanation] = useMemo<[string | null, string | null]>(() => {
-    const element = deck[curr.idx];
+    const element = state.deck[curr.idx];
     if (element == null) return [null, null];
     const [kanji, explanation] = element;
     return [kanji, explanation];
-  }, [curr.idx, deck]);
+  }, [curr.idx, state.deck]);
 
   const card = useMemo(() => {
     const showKanji = settings.showFirst === "kanji";
     return {
       question: showKanji ? kanji : explanation,
       answer: showKanji ? explanation : kanji,
-      isOver: curr.idx >= deck.length,
+      isOver: curr.idx >= state.deck.length,
     };
-  }, [curr.idx, deck.length, explanation, kanji, settings.showFirst]);
+  }, [curr.idx, state.deck.length, explanation, kanji, settings.showFirst]);
 
   const shouldShowAdditionalInfo: boolean =
     !card.isOver && curr.isRevealed && !!kanji && isKanji;
@@ -65,13 +96,17 @@ export const Quiz = () => {
             card={card}
             curr={curr}
             handleIncorrect={handleIncorrect}
-            incorrect={incorrect}
+            incorrect={state.incorrect}
           />
         ) : (
           <>
             <h2>No more cards</h2>
-            {incorrect.length > 0 ? (
-              <IncorrectKanji incorrect={incorrect} deck={deck} curr={curr} />
+            {state.incorrect.length > 0 ? (
+              <IncorrectKanji
+                incorrect={state.incorrect}
+                deck={state.deck}
+                curr={curr}
+              />
             ) : null}
             <Link to="/">
               <Button>Exit</Button>
@@ -89,7 +124,11 @@ export const Quiz = () => {
         <>
           <hr />
           <Container>
-            <IncorrectKanji incorrect={incorrect} deck={deck} curr={curr} />
+            <IncorrectKanji
+              incorrect={state.incorrect}
+              deck={state.deck}
+              curr={curr}
+            />
           </Container>
         </>
       )}

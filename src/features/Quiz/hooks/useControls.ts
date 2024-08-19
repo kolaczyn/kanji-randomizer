@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
-import { DeckContext } from "../context/DeckContext.tsx";
+import { useState } from "react";
+import { useAtom } from "jotai/react";
+import { deckAtom } from "../../../state/deckAtom.ts";
 
 export type UseControlsReturn = {
   handlePrevious: () => void;
@@ -10,7 +11,7 @@ export type UseControlsReturn = {
 };
 
 export const useControls = (): UseControlsReturn => {
-  const deck = useContext(DeckContext);
+  const [{ deck }] = useAtom(deckAtom);
   const [curr, setCurr] = useState<{ idx: number; isRevealed: boolean }>({
     idx: 0,
     isRevealed: false,

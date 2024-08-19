@@ -1,8 +1,8 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Settings } from "../../../components/Settings.tsx";
-import { useContext } from "react";
-import { DeckContext } from "../context/DeckContext.tsx";
 import { UseControlsReturn } from "../hooks/useControls.ts";
+import { useAtom } from "jotai/react";
+import { deckAtom } from "../../../state/deckAtom.ts";
 
 export const QuizControls = ({
   curr,
@@ -11,7 +11,7 @@ export const QuizControls = ({
   handlePrevious,
   handleNext,
 }: UseControlsReturn) => {
-  const deck = useContext(DeckContext);
+  const [{ deck }] = useAtom(deckAtom);
   return (
     <ButtonGroup alignItems="center">
       <Button isDisabled={isFirst} onClick={handlePrevious}>
