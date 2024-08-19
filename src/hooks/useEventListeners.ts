@@ -19,5 +19,5 @@ export const useEventListeners = ({
     };
     document.addEventListener("keydown", eventListener);
     return () => document.removeEventListener("keydown", eventListener);
-  }, [onNext, onPrevious]);
+  }, [onIncorrect, onNext, onPrevious]);
 };
