@@ -86,7 +86,7 @@ export const hiraganaWithDakuten: KanjiList = [
   //
   ["わ", "wa"],
   ["を", "wo"],
-  ["ん", "n/m"],
+  ["ん", "n"],
 ];
 
 // Yeah, I know this is a bit redundant, but whatever :p
@@ -146,5 +146,5 @@ export const hiraganaWithoutDakuten: KanjiList = [
   //
   ["わ", "wa"],
   ["を", "wo"],
-  ["ん", "n/m"],
+  ["ん", "n"],
 ];
