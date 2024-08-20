@@ -7,3 +7,5 @@
   - Thanks https://jlptsensei.com  (•‿•)
 - Hiragana and katakana definitions are from https://freejapaneselessons.com/japanese-alphabet-hiragana/
   - Thanks https://freejapaneselessons.com/ (•‿•)
+- Hiragana and katakana stroke order are from https://github.com/KeanuTomatoMomotaro/HirStroke
+  - Thanks [KeanuTomatoMomotaro](https://github.com/KeanuTomatoMomotaro) (•‿•)
