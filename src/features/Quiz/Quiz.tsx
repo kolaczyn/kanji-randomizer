@@ -33,6 +33,8 @@ export const QuizWrapper = () => {
     setDeck((draft) => {
       draft.deck = finalDeck;
       draft.incorrect = [];
+      draft.idx = 0;
+      draft.isRevealed = false;
     });
 
     setIsInit(true);
