@@ -13,12 +13,15 @@ export const useControls = () => {
 
   const handleNext = () => {
     setState((draft) => {
-      if (draft.isRevealed) {
-        draft.idx = Math.min(draft.idx + 1, deck.length);
-        draft.isRevealed = false;
-      } else {
+      if (!draft.isRevealed) {
         draft.isRevealed = true;
+        return;
       }
+      if (draft.idx === deck.length - 1) {
+        return;
+      }
+      draft.idx = Math.min(draft.idx + 1, deck.length);
+      draft.isRevealed = false;
     });
   };
 
