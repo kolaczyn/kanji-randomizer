@@ -71,9 +71,7 @@ export const Quiz = () => {
     !card.isOver &&
     state.isRevealed &&
     // make sure the character exists (we may be out of range)
-    !!kanji &&
-    // there is no stroke order for hiragana and katakana
-    isKanji;
+    !!kanji;
 
   return (
     <>
@@ -83,7 +81,11 @@ export const Quiz = () => {
       </Container>
       <Box>
         {shouldShowAdditionalInfo ? (
-          <CharacterAdditionalInfo kanji={kanji!} />
+          <CharacterAdditionalInfo
+            kanji={kanji!}
+            isKanji={isKanji}
+            explanation={explanation!}
+          />
         ) : null}
       </Box>
       {settings.showIncorrect && (
