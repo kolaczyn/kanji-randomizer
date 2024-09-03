@@ -11,10 +11,10 @@ import { QuizControls } from "./components/QuizControls.tsx";
 import { QuizCard } from "./components/QuizCard.tsx";
 import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";
 import { deckAtom, deckAtomKanjiExplanation } from "../../state/deckAtom.ts";
-import { getDeck } from "../../utils/getDeck.ts";
 import { shuffleArray } from "../../utils/shuffleArray.ts";
 import { useAppRouteData } from "../../hooks/useAppRouteData.ts";
 import { Endgame } from "./components/Endgame.tsx";
+import { useFetchDeck } from "../../hooks/useFetchDeck.ts";
 
 export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
@@ -23,11 +23,13 @@ export const QuizWrapper = () => {
   const { shouldShuffle } = useLocation().state as RouterState;
   const params = useParams();
   const lvl = params.level as Level;
+  const deckResponse = useFetchDeck(lvl);
 
   // This should work for now, but in the future I should do something like this:
   // https://jotai.org/docs/guides/initialize-atom-on-render
   useEffect(() => {
-    const sortedDeck = getDeck(lvl)!;
+    if (deckResponse.status !== "success") return;
+    const sortedDeck = deckResponse.data;
     const finalDeck = shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
 
     setDeck((draft) => {
@@ -38,7 +40,7 @@ export const QuizWrapper = () => {
     });
 
     setIsInit(true);
-  }, [lvl, setDeck, shouldShuffle]);
+  }, [deckResponse.status, lvl, setDeck, shouldShuffle]);
 
   return isInit ? <Quiz /> : null;
 };

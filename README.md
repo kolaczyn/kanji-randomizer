@@ -1,5 +1,11 @@
 # Kanji Randomizer
 
+## How to run
+
+1. Setup https://github.com/kolaczyn/kanji-randomizer-backend
+2. Create .env based on .env.example
+3. Run the app via `yarn dev`
+
 ## Credits
 
 - Kanji images are from https://github.com/Kimtaro/kanjivg2svg. But I didn't use them directly, I used png-s from [this reddit comment](https://www.reddit.com/r/LearnJapanese/comments/awr5vw/comment/ehriio7/). Thanks [/u/modron82](https://www.reddit.com/user/modron82/)  (•‿•)
