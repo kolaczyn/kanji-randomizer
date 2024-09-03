@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
+ENV VITE_API_BASE_URL=http://192.168.1.27:4000
 RUN yarn build
 
 FROM nginx:alpine AS runtime
