@@ -22,7 +22,7 @@ export const IncorrectKanji = () => {
       <ul>
         {incorrect.map((idx) => (
           <li key={idx}>
-            {deck[idx][0]} - {deck[idx][1]}
+            {deck[idx].character} - {deck[idx].meaning}
           </li>
         ))}
       </ul>

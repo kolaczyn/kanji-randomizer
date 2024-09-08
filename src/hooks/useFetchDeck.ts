@@ -1,4 +1,4 @@
-import { QuestionAnswerList } from "../types.ts";
+import { DeckDto } from "../types.ts";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL } from "../const/env.ts";
@@ -9,7 +9,7 @@ export const useFetchDeck = (ids: string[]) =>
     queryKey: ["deck", ids],
     queryFn: async () =>
       axios
-        .get<QuestionAnswerList>(
+        .get<DeckDto>(
           `${API_BASE_URL}/v2/decks/join?${queryString.stringify({
             ids: ids,
           })}`,
