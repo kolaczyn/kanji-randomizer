@@ -1,6 +1,6 @@
 import { useAtom } from "jotai/react";
 import { useMemo } from "react";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 import { useEventListeners } from "../../hooks/useEventListeners.ts";
 import { useSettings } from "../../hooks/useSettings.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
@@ -40,24 +40,37 @@ export const Quiz = () => {
 
   return (
     <>
-      <Container>
-        <QuizControls />
-        {card.isOver ? <Endgame /> : <QuizCard card={card} />}
-      </Container>
-      <Box>
-        {shouldShowAdditionalInfo ? (
-          <CharacterAdditionalInfo
-            character={char!}
-            strokeImg={strokeImg}
-            isKanji={isKanji}
-          />
-        ) : null}
-      </Box>
-      {settings.showIncorrect && (
-        <Container mt="4">
-          <IncorrectKanji />
+      {/* padding bottom prevent footer from hiding some content */}
+      <Box pb="16">
+        <Container>
+          {card.isOver ? <Endgame /> : <QuizCard card={card} />}
         </Container>
-      )}
+        <Box>
+          {shouldShowAdditionalInfo ? (
+            <CharacterAdditionalInfo
+              character={char!}
+              strokeImg={strokeImg}
+              isKanji={isKanji}
+            />
+          ) : null}
+        </Box>
+        {settings.showIncorrect && (
+          <Container mt="4">
+            <IncorrectKanji />
+          </Container>
+        )}
+      </Box>
+      <Flex
+        py="2"
+        position="fixed"
+        bottom="0"
+        left="0"
+        right="0"
+        justifyContent="space-around"
+        className="glass"
+      >
+        <QuizControls />
+      </Flex>
     </>
   );
 };

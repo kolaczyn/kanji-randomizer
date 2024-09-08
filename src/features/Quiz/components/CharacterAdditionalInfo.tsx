@@ -17,9 +17,7 @@ export const CharacterAdditionalInfo = ({
       <Container pb="2">
         {isKanji && <WaniKaniLink character={character} />}
       </Container>
-      {strokeImg && (
-        <Image mx="auto" src={strokeImg} alt={character} height={100} />
-      )}
+      {strokeImg && <Image mx="auto" src={strokeImg} alt={character} />}
     </>
   );
 };
