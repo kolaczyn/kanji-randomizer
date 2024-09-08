@@ -1,11 +1,11 @@
-import { ListItem, UnorderedList } from "@chakra-ui/react";
-import { Container } from "@chakra-ui/react";
+import { Container, Grid, GridItem } from "@chakra-ui/react";
 import { useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
 import { Logo } from "./Logo.tsx";
 import { ChakraLink } from "./ChakraLink.tsx";
 import { RouterLink } from "./RouterLink.tsx";
 import { useFetchHomeTiles } from "../hooks/useFetchHomeTiles.ts";
+import { NavTile } from "./NavTile.tsx";
 
 export const StartScreen = () => {
   const [shouldShuffle, setShouldShuffle] = useState(true);
@@ -20,15 +20,15 @@ export const StartScreen = () => {
   return (
     <Container>
       <Logo />
-      <UnorderedList listStyleType="none">
-        {tiles.map((item, index) => (
-          <ListItem key={index}>
+      <Grid templateColumns="repeat(2, 1fr)" gap="2">
+        {tiles.map((item) => (
+          <GridItem key={item.id}>
             <ChakraLink as={RouterLink} to={`/${item.id}`} state={state}>
-              {item.title} ({item.length})
+              <NavTile title={item.title} subtitle={`${item.length} cards`} />
             </ChakraLink>
-          </ListItem>
+          </GridItem>
         ))}
-      </UnorderedList>
+      </Grid>
       <Checkbox
         mt="2"
         isChecked={shouldShuffle}
