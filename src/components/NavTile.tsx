@@ -3,15 +3,25 @@ import { Box, Text } from "@chakra-ui/react";
 type Props = {
   title: string;
   subtitle: string;
+  isSelected?: boolean;
+  onClick: () => void;
 };
 
-export const NavTile = ({ title, subtitle }: Props) => (
+// TODO this should be a box, but I don't want to restyle this whole thing
+export const NavTile = ({
+  title,
+  subtitle,
+  isSelected = false,
+  onClick,
+}: Props) => (
   <Box
+    onClick={onClick}
     transition="background-color 0.3s ease"
-    bg="gray.100"
+    bg={isSelected ? "green.100" : "gray.100"}
     p="2"
     borderRadius="12"
-    _hover={{ bg: "gray.200" }}
+    cursor="pointer"
+    _hover={{ bg: isSelected ? "green.100" : "gray.100" }}
   >
     <Text fontWeight="bold">{title}</Text>
     <Text>{subtitle}</Text>
