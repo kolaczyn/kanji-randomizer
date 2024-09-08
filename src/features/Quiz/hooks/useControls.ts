@@ -2,7 +2,7 @@ import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
 export const useControls = () => {
-  const [{ deck, idx, isRevealed }, setState] = useAtom(deckAtom);
+  const [{ deck, idx, isRevealed, incorrect }, setState] = useAtom(deckAtom);
 
   const handlePrevious = () => {
     setState((draft) => {
@@ -32,6 +32,7 @@ export const useControls = () => {
   };
 
   const markIncorrect = () => {
+    if (incorrect.includes(idx)) return;
     setState((draft) => {
       draft.incorrect = [...draft.incorrect, idx];
     });
