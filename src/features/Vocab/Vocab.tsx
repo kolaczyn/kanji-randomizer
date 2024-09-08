@@ -22,19 +22,14 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 export const Vocab = () => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState("level-n5");
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(255);
+  const [min, setMin] = useState(2);
+  const [max, setMax] = useState(2);
   const [debouncedText] = useDebounce(text, 350);
   const response = useFetchVocab({
     search: debouncedText,
     minLength: min,
     maxLength: max,
   });
-
-  const handlePreset = (id: string) => {
-    const fullId = `level-n${id}`;
-    setText(fullId);
-  };
 
   const rowVirtualizer = useVirtualizer({
     count: response.data?.results.length ?? 0,
@@ -79,7 +74,11 @@ export const Vocab = () => {
           <Text>Presets:</Text>
           <ButtonGroup>
             {presetButtons.map((x) => (
-              <Button key={x.value} onClick={() => handlePreset(x.value)}>
+              <Button
+                colorScheme={text === x.value ? "teal" : undefined}
+                key={x.value}
+                onClick={() => setText(x.value)}
+              >
                 {x.label}
               </Button>
             ))}

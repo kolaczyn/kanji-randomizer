@@ -1,22 +1,22 @@
 export const presetButtons = [
   {
     label: "N5",
-    value: "5",
+    value: "level-n5",
   },
   {
     label: "N4",
-    value: "4",
+    value: "level-n4",
   },
   {
     label: "N3",
-    value: "3",
+    value: "level-n3",
   },
   {
     label: "N2",
-    value: "2",
+    value: "level-n2",
   },
   {
     label: "N1",
-    value: "1",
+    value: "level-n1",
   },
 ];
