@@ -15,9 +15,8 @@ export const StartScreen = () => {
   const result = useFetchHomeTiles();
 
   const isButtonDisabled = selectedDecks.length === 0;
-  const buttonLabel = isButtonDisabled ? "Select a deck" : "Start";
 
-  const handleStart = () => {
+  const handleStartQuiz = () => {
     const search = queryString.stringify({
       decks: selectedDecks,
       shouldShuffle: shouldShuffle,
@@ -26,6 +25,10 @@ export const StartScreen = () => {
       pathname: "/deck",
       search,
     });
+  };
+
+  const handleStartVocab = () => {
+    navigate("/vocab");
   };
 
   if (result.isLoading) return <h1>Loading</h1>;
@@ -58,14 +61,19 @@ export const StartScreen = () => {
         >
           Shuffle
         </Checkbox>
-        <Button
-          w="full"
-          colorScheme="teal"
-          isDisabled={isButtonDisabled}
-          onClick={handleStart}
-        >
-          {buttonLabel}
-        </Button>
+        <VStack w="full">
+          <Button
+            w="full"
+            colorScheme="teal"
+            isDisabled={isButtonDisabled}
+            onClick={handleStartQuiz}
+          >
+            Start Quiz
+          </Button>
+          <Button mt="8" w="full" colorScheme="teal" onClick={handleStartVocab}>
+            Show vocab
+          </Button>
+        </VStack>
       </VStack>
     </Container>
   );
