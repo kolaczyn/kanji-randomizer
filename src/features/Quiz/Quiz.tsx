@@ -20,7 +20,8 @@ export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
   const [, setDeck] = useAtom(deckAtom);
 
-  const { shouldShuffle } = useLocation().state as RouterState;
+  const routerState = useLocation().state as RouterState;
+  const shouldShuffle = routerState?.shouldShuffle ?? false;
   const params = useParams();
   const lvl = params.level as Level;
   const deckResponse = useFetchDeck(lvl);
