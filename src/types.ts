@@ -15,14 +15,10 @@ export type RouterState = {
   shouldShuffle: boolean;
 };
 
-export type HomeScreenStatsDto = {
-  n1: number;
-  n2: number;
-  n3: number;
-  n4: number;
-  n5: number;
-  hiraganaWithDakuten: number;
-  hiraganaWithoutDakuten: number;
-  katakanaWithDakuten: number;
-  katakanaWithoutDakuten: number;
+export type HomeTilesDto = {
+  tiles: {
+    id: string;
+    title: string;
+    length: number;
+  }[];
 };
