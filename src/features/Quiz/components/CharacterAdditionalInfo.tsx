@@ -15,6 +15,7 @@ export const CharacterAdditionalInfo = ({
   isKanji,
   explanation,
 }: Props) => {
+  //   TODO the imgUrl should come from backend
   const imgUrl = isKanji
     ? kanjiToStrokeImgName(kanji)
     : kanaToStrokeImgName(explanation);

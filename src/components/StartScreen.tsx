@@ -1,16 +1,25 @@
-import { Container, Grid, GridItem } from "@chakra-ui/react";
+import { Button, Container, Grid, GridItem, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
 import { Logo } from "./Logo.tsx";
-import { ChakraLink } from "./ChakraLink.tsx";
-import { RouterLink } from "./RouterLink.tsx";
 import { useFetchHomeTiles } from "../hooks/useFetchHomeTiles.ts";
 import { NavTile } from "./NavTile.tsx";
+import { useToggleList } from "../hooks/useToggleList.ts";
+import { useNavigate } from "react-router-dom";
 
 export const StartScreen = () => {
+  const navigate = useNavigate();
+  const [selectedDecks, selectedDecksToggle] = useToggleList<string>([]);
   const [shouldShuffle, setShouldShuffle] = useState(true);
   const state = { shouldShuffle };
   const result = useFetchHomeTiles();
+
+  const isButtonDisabled = selectedDecks.length === 0;
+  const buttonLabel = isButtonDisabled ? "Select a deck" : "Start";
+
+  const handleStart = () => {
+    navigate("/details", { state });
+  };
 
   if (result.isLoading) return <h1>Loading</h1>;
   if (result.isError) return <h1>Error</h1>;
@@ -19,23 +28,38 @@ export const StartScreen = () => {
 
   return (
     <Container>
-      <Logo />
-      <Grid templateColumns="repeat(2, 1fr)" gap="2">
-        {tiles.map((item) => (
-          <GridItem key={item.id}>
-            <ChakraLink as={RouterLink} to={`/${item.id}`} state={state}>
-              <NavTile title={item.title} subtitle={`${item.length} cards`} />
-            </ChakraLink>
-          </GridItem>
-        ))}
-      </Grid>
-      <Checkbox
-        mt="2"
-        isChecked={shouldShuffle}
-        onChange={(e) => setShouldShuffle(e.target.checked)}
-      >
-        Shuffle
-      </Checkbox>
+      <VStack>
+        <Logo />
+        <Grid templateColumns="repeat(2, 1fr)" gap="2">
+          {tiles.map((item) => (
+            <GridItem key={item.id}>
+              <NavTile
+                onClick={() => {
+                  selectedDecksToggle(item.id);
+                }}
+                isSelected={selectedDecks.includes(item.id)}
+                title={item.title}
+                subtitle={`${item.length} cards`}
+              />
+            </GridItem>
+          ))}
+        </Grid>
+        <Checkbox
+          mt="2"
+          isChecked={shouldShuffle}
+          onChange={(e) => setShouldShuffle(e.target.checked)}
+        >
+          Shuffle
+        </Checkbox>
+        <Button
+          w="full"
+          colorScheme="teal"
+          isDisabled={isButtonDisabled}
+          onClick={handleStart}
+        >
+          {buttonLabel}
+        </Button>
+      </VStack>
     </Container>
   );
 };
