@@ -41,7 +41,7 @@ export const QuizWrapper = () => {
     });
 
     setIsInit(true);
-  }, [deckResponse.status, lvl, setDeck, shouldShuffle]);
+  }, [deckResponse.data, deckResponse.status, lvl, setDeck, shouldShuffle]);
 
   return isInit ? <Quiz /> : null;
 };
