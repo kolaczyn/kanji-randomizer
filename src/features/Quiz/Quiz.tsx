@@ -41,7 +41,7 @@ export const Quiz = () => {
   return (
     <>
       {/* padding bottom prevent footer from hiding some content */}
-      <Box pb="16">
+      <Box pb="32">
         <Container>
           {card.isOver ? <Endgame /> : <QuizCard card={card} />}
         </Container>
