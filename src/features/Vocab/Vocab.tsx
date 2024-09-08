@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Container,
@@ -8,24 +9,19 @@ import {
   Input,
   Skeleton,
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
   Textarea,
-  Th,
-  Thead,
-  Tr,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useFetchVocab } from "./hooks/useFetchVocab.ts";
 import { useDebounce } from "use-debounce";
 import { presetButtons } from "./consts.ts";
 import { VocabRow } from "./components/VocabRow.tsx";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const Vocab = () => {
-  const [text, setText] = useState("");
+  const parentRef = useRef<HTMLDivElement>(null);
+  const [text, setText] = useState("level-n5");
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(255);
   const [debouncedText] = useDebounce(text, 350);
@@ -39,6 +35,15 @@ export const Vocab = () => {
     const fullId = `level-n${id}`;
     setText(fullId);
   };
+
+  const rowVirtualizer = useVirtualizer({
+    count: response.data?.results.length ?? 0,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 68,
+    overscan: 5,
+  });
+
+  console.log(rowVirtualizer);
 
   return (
     <>
@@ -85,25 +90,46 @@ export const Vocab = () => {
       <Container maxW="container.lg">
         {response.data ? (
           <>
-            <Text as="h2" fontWeight="bold" fontSize="lg" mb="1" align="center">
-              Results ({response.data.results.length}), took{" "}
-              {Math.round(response.data.timeMs)}ms
+            <Text as="h2" fontSize="lg" mb="1" align="center">
+              <Text as="span" fontWeight="bold">
+                Results ({response.data.results.length})
+              </Text>
+              <Text as="span">
+                , found in {Math.round(response.data.timeMs)}ms
+              </Text>
             </Text>
-            <TableContainer>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Japanese</Th>
-                    <Th>English</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {response.data.results.map((x, idx) => (
-                    <VocabRow {...x} key={idx} />
+            <Box>
+              <Box
+                ref={parentRef}
+                style={{
+                  height: `500px`,
+                  overflow: "auto",
+                }}
+              >
+                <Box
+                  style={{
+                    height: `${rowVirtualizer.getTotalSize()}px`,
+                    width: "100%",
+                    position: "relative",
+                  }}
+                >
+                  {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+                    <VocabRow
+                      key={virtualRow.index}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                      {...response.data.results[virtualRow.index]}
+                    />
                   ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
+                </Box>
+              </Box>
+            </Box>
           </>
         ) : response.isLoading ? (
           <Stack>

@@ -28,4 +28,5 @@ export const useFetchVocab = ({
         )
         .then((x) => x.data),
     enabled: search.length > 0,
+    refetchOnWindowFocus: false,
   });

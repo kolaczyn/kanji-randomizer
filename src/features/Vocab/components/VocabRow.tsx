@@ -1,18 +1,19 @@
-import { Td, Tr } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { RubyText } from "./RubyText.tsx";
-import { memo } from "react";
+import { CSSProperties, memo } from "react";
 
 type Props = {
   jap: string;
   kana: string;
   eng: string;
+  style: CSSProperties;
 };
 
-export const VocabRow = memo(({ jap, eng, kana }: Props) => (
-  <Tr>
-    <Td>
+export const VocabRow = memo(({ jap, eng, kana, style }: Props) => (
+  <HStack style={style}>
+    <Box>
       <RubyText text={jap} explanation={kana} />
-    </Td>
-    <Td>{eng}</Td>
-  </Tr>
+    </Box>
+    <Box>{eng}</Box>
+  </HStack>
 ));
