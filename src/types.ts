@@ -12,6 +12,7 @@ export type CardDto = {
   character: string;
   meaning: string;
   strokeImg: string | null;
+  isKanji: boolean;
 };
 
 export type DeckDto = {

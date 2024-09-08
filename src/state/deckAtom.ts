@@ -20,6 +20,7 @@ type KanjiExplanation = {
   character: string;
   meaning: string;
   strokeImg: string | null;
+  isKanji: boolean;
 } | null;
 
 export const deckAtomKanjiExplanation = atom<KanjiExplanation>((get) => {
@@ -31,5 +32,6 @@ export const deckAtomKanjiExplanation = atom<KanjiExplanation>((get) => {
     character: element.character,
     meaning: element.meaning,
     strokeImg: element.strokeImg,
+    isKanji: element.isKanji,
   };
 });

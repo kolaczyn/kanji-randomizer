@@ -55,7 +55,8 @@ export const Quiz = () => {
 
   const strokeImg = kanjiExplanation?.strokeImg ?? null;
   const explanation = kanjiExplanation?.meaning ?? null;
-  const kanji = kanjiExplanation?.character ?? null;
+  const char = kanjiExplanation?.character ?? null;
+  const isKanji = kanjiExplanation?.isKanji ?? false;
 
   useEventListeners({
     onPrevious: handlePrevious,
@@ -66,17 +67,17 @@ export const Quiz = () => {
   const card = useMemo(() => {
     const showKanji = settings.showFirst === "kanji";
     return {
-      question: showKanji ? kanji : explanation,
-      answer: showKanji ? explanation : kanji,
+      question: showKanji ? char : explanation,
+      answer: showKanji ? explanation : char,
       isOver: state.idx >= state.deck.length,
     };
-  }, [state.idx, state.deck.length, explanation, kanji, settings.showFirst]);
+  }, [state.idx, state.deck.length, explanation, char, settings.showFirst]);
 
   const shouldShowAdditionalInfo: boolean =
     !card.isOver &&
     state.isRevealed &&
     // make sure the character exists (we may be out of range)
-    !!kanji;
+    !!char;
 
   return (
     <>
@@ -86,7 +87,11 @@ export const Quiz = () => {
       </Container>
       <Box>
         {shouldShowAdditionalInfo ? (
-          <CharacterAdditionalInfo character={kanji!} strokeImg={strokeImg} />
+          <CharacterAdditionalInfo
+            character={char!}
+            strokeImg={strokeImg}
+            isKanji={isKanji}
+          />
         ) : null}
       </Box>
       {settings.showIncorrect && (
