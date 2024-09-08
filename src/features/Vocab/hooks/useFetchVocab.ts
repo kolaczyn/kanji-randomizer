@@ -2,13 +2,30 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { VocabDto } from "../types.ts";
 import { API_BASE_URL } from "../../../const/env.ts";
+import queryString from "query-string";
 
-export const useFetchVocab = (kanji: string) =>
+type UseFetchVocabArgs = {
+  search: string;
+  minLength: number;
+  maxLength: number;
+};
+
+export const useFetchVocab = ({
+  minLength,
+  maxLength,
+  search,
+}: UseFetchVocabArgs) =>
   useQuery<VocabDto>({
-    queryKey: ["vocab", kanji],
+    // TODO add eslint rule to make sure queryKey is always happy
+    queryKey: ["vocab", search, minLength, maxLength],
     queryFn: async () =>
       axios
-        .get<VocabDto>(`${API_BASE_URL}/v2/vocab/${kanji}`)
+        .get<VocabDto>(
+          `${API_BASE_URL}/v2/vocab/${search}?${queryString.stringify({
+            minLength,
+            maxLength,
+          })}`,
+        )
         .then((x) => x.data),
-    enabled: kanji.length > 0,
+    enabled: search.length > 0,
   });
