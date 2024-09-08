@@ -21,8 +21,8 @@ import {
 import { useState } from "react";
 import { useFetchVocab } from "./hooks/useFetchVocab.ts";
 import { useDebounce } from "use-debounce";
-import { RubyText } from "./components/RubyText.tsx";
 import { presetButtons } from "./consts.ts";
+import { VocabRow } from "./components/VocabRow.tsx";
 
 export const Vocab = () => {
   const [text, setText] = useState("");
@@ -99,12 +99,7 @@ export const Vocab = () => {
                 </Thead>
                 <Tbody>
                   {response.data.results.map((x, idx) => (
-                    <Tr key={idx}>
-                      <Td>
-                        <RubyText text={x.jap} explanation={x.kana} />
-                      </Td>
-                      <Td>{x.eng}</Td>
-                    </Tr>
+                    <VocabRow {...x} key={idx} />
                   ))}
                 </Tbody>
               </Table>
