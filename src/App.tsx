@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <StartScreen />,
   },
   {
-    path: "/:level",
+    path: "/deck",
     element: <QuizWrapper />,
   },
 ]);

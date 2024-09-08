@@ -6,19 +6,26 @@ import { useFetchHomeTiles } from "../hooks/useFetchHomeTiles.ts";
 import { NavTile } from "./NavTile.tsx";
 import { useToggleList } from "../hooks/useToggleList.ts";
 import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 export const StartScreen = () => {
   const navigate = useNavigate();
   const [selectedDecks, selectedDecksToggle] = useToggleList<string>([]);
-  const [shouldShuffle, setShouldShuffle] = useState(true);
-  const state = { shouldShuffle };
+  const [shouldShuffle, setShouldShuffle] = useState(false);
   const result = useFetchHomeTiles();
 
   const isButtonDisabled = selectedDecks.length === 0;
   const buttonLabel = isButtonDisabled ? "Select a deck" : "Start";
 
   const handleStart = () => {
-    navigate("/details", { state });
+    const search = queryString.stringify({
+      decks: selectedDecks,
+      shouldShuffle: shouldShuffle,
+    });
+    navigate({
+      pathname: "/deck",
+      search,
+    });
   };
 
   if (result.isLoading) return <h1>Loading</h1>;

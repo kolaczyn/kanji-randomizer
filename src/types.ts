@@ -8,12 +8,7 @@ export type KanaLevel =
 
 export type Level = KanjiLevel | KanaLevel;
 
-// It's also used for hiragana and katakana, but whatever :p
-export type KanjiList = [string, string][];
-
-export type RouterState = {
-  shouldShuffle: boolean;
-};
+export type QuestionAnswerList = [string, string][];
 
 export type HomeTilesDto = {
   tiles: {

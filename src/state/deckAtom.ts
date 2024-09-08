@@ -1,9 +1,9 @@
 import { atomWithImmer } from "jotai-immer";
-import { KanjiList } from "../types.ts";
+import { QuestionAnswerList } from "../types.ts";
 import { atom } from "jotai";
 
 export type DeckAtomState = {
-  deck: KanjiList;
+  deck: QuestionAnswerList;
   incorrect: number[];
   idx: number;
   isRevealed: boolean;
