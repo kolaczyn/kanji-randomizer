@@ -1,9 +1,9 @@
 import { atomWithImmer } from "jotai-immer";
-import { QuestionAnswerList } from "../types.ts";
+import { CardDto } from "../types.ts";
 import { atom } from "jotai";
 
 export type DeckAtomState = {
-  deck: QuestionAnswerList;
+  deck: CardDto[];
   incorrect: number[];
   idx: number;
   isRevealed: boolean;
@@ -16,13 +16,20 @@ export const deckAtom = atomWithImmer<DeckAtomState>({
   isRevealed: false,
 });
 
-type KanjiExplanation = [string | null, string | null];
+type KanjiExplanation = {
+  character: string;
+  meaning: string;
+  strokeImg: string | null;
+} | null;
 
 export const deckAtomKanjiExplanation = atom<KanjiExplanation>((get) => {
   const { deck, idx } = get(deckAtom);
 
   const element = deck[idx];
-  if (element == null) return [null, null];
-  const [kanji, explanation] = element;
-  return [kanji, explanation];
+  if (element == null) return null;
+  return {
+    character: element.character,
+    meaning: element.meaning,
+    strokeImg: element.strokeImg,
+  };
 });

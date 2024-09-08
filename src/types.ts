@@ -8,7 +8,17 @@ export type KanaLevel =
 
 export type Level = KanjiLevel | KanaLevel;
 
-export type QuestionAnswerList = [string, string][];
+export type CardDto = {
+  character: string;
+  meaning: string;
+  strokeImg: string | null;
+};
+
+export type DeckDto = {
+  id: string;
+  title: string;
+  deck: CardDto[];
+};
 
 export type HomeTilesDto = {
   tiles: {

@@ -29,7 +29,7 @@ export const QuizWrapper = () => {
   // https://jotai.org/docs/guides/initialize-atom-on-render
   useEffect(() => {
     if (deckResponse.status !== "success") return;
-    const sortedDeck = deckResponse.data;
+    const sortedDeck = deckResponse.data.deck;
     const finalDeck = shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
 
     setDeck((draft) => {
@@ -51,7 +51,11 @@ export const Quiz = () => {
 
   const { handlePrevious, handleNext, handleToggleIncorrect } = useControls();
 
-  const [[kanji, explanation]] = useAtom(deckAtomKanjiExplanation);
+  const [kanjiExplanation] = useAtom(deckAtomKanjiExplanation);
+
+  const strokeImg = kanjiExplanation?.strokeImg ?? null;
+  const explanation = kanjiExplanation?.meaning ?? null;
+  const kanji = kanjiExplanation?.character ?? null;
 
   useEventListeners({
     onPrevious: handlePrevious,
@@ -82,11 +86,7 @@ export const Quiz = () => {
       </Container>
       <Box>
         {shouldShowAdditionalInfo ? (
-          <CharacterAdditionalInfo
-            kanji={kanji!}
-            isKanji
-            explanation={explanation!}
-          />
+          <CharacterAdditionalInfo character={kanji!} strokeImg={strokeImg} />
         ) : null}
       </Box>
       {settings.showIncorrect && (
