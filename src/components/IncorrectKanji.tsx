@@ -1,6 +1,7 @@
 import { toPercentage } from "../utils/toPercentage.ts";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../state/deckAtom.ts";
+import { ListItem, Text, UnorderedList } from "@chakra-ui/react";
 
 export const IncorrectKanji = () => {
   const [{ idx, incorrect, deck, isRevealed }] = useAtom(deckAtom);
@@ -12,20 +13,20 @@ export const IncorrectKanji = () => {
 
   return incorrect.length > 0 ? (
     <>
-      <div>Incorrect Kanji</div>
+      <Text fontWeight="bold">Summary</Text>
       <div>
         Incorrect: {incorrect.length} ({incorrectPercent})
       </div>
       <div>
         Okay: {correct} ({correctPercent})
       </div>
-      <ul>
+      <UnorderedList>
         {incorrect.map((idx) => (
-          <li key={idx}>
+          <ListItem key={idx} listStyleType="none">
             {deck[idx].character} - {deck[idx].meaning}
-          </li>
+          </ListItem>
         ))}
-      </ul>
+      </UnorderedList>
     </>
   ) : null;
 };

@@ -1,23 +1,23 @@
 import { useEffect } from "react";
+import { useControls } from "../features/Quiz/hooks/useControls.ts";
 
-type Args = {
-  onPrevious: () => void;
-  onNext: () => void;
-  onIncorrect: () => void;
-};
-
-export const useEventListeners = ({
-  onNext,
-  onPrevious,
-  onIncorrect,
-}: Args) => {
+export const useEventListeners = () => {
+  const { handlePrevious, handleNext, correctAndNext, incorrectAndNext } =
+    useControls();
   useEffect(() => {
     const eventListener = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") onPrevious();
-      if (e.key === "ArrowRight") onNext();
-      if (e.key.toLowerCase() === "x") onIncorrect();
+      switch (e.key) {
+        case "ArrowLeft":
+          return handlePrevious();
+        case "ArrowRight":
+          return handleNext();
+        case "1":
+          return correctAndNext();
+        case "2":
+          return incorrectAndNext();
+      }
     };
     document.addEventListener("keydown", eventListener);
     return () => document.removeEventListener("keydown", eventListener);
-  }, [onIncorrect, onNext, onPrevious]);
+  }, [correctAndNext, handleNext, handlePrevious, incorrectAndNext]);
 };

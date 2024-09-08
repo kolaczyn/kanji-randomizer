@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { Level } from "../../types.ts";
 import { useSettings } from "../../hooks/useSettings.ts";
 import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
-import { useControls } from "./hooks/useControls.ts";
 import { QuizControls } from "./components/QuizControls.tsx";
 import { QuizCard } from "./components/QuizCard.tsx";
 import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";
@@ -49,8 +48,6 @@ export const Quiz = () => {
   const [settings] = useSettings();
   const [state] = useAtom(deckAtom);
 
-  const { handlePrevious, handleNext, handleToggleIncorrect } = useControls();
-
   const [kanjiExplanation] = useAtom(deckAtomKanjiExplanation);
 
   const strokeImg = kanjiExplanation?.strokeImg ?? null;
@@ -58,11 +55,7 @@ export const Quiz = () => {
   const char = kanjiExplanation?.character ?? null;
   const isKanji = kanjiExplanation?.isKanji ?? false;
 
-  useEventListeners({
-    onPrevious: handlePrevious,
-    onNext: handleNext,
-    onIncorrect: handleToggleIncorrect,
-  });
+  useEventListeners();
 
   const card = useMemo(() => {
     const showKanji = settings.showFirst === "kanji";

@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, HStack } from "@chakra-ui/react";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 import { useControls } from "../hooks/useControls.ts";
@@ -8,8 +8,8 @@ type Props = {
 };
 
 export const QuizCard = ({ card }: Props) => {
-  const [{ idx, incorrect, isRevealed }] = useAtom(deckAtom);
-  const { handleToggleIncorrect } = useControls();
+  const [{ isRevealed }] = useAtom(deckAtom);
+  const { correctAndNext, incorrectAndNext } = useControls();
   return (
     <Box>
       <Box fontSize="2rem">{card.question}</Box>
@@ -17,9 +17,14 @@ export const QuizCard = ({ card }: Props) => {
         <>
           <div>{card.answer}</div>
           {isRevealed && (
-            <Button marginBottom="1rem" onClick={handleToggleIncorrect}>
-              Mark as {incorrect.includes(idx) ? "correct" : "incorrect"}
-            </Button>
+            <HStack spacing="2">
+              <Button marginBottom="1rem" onClick={correctAndNext}>
+                Ok (1)
+              </Button>
+              <Button marginBottom="1rem" onClick={incorrectAndNext}>
+                Wrong (2)
+              </Button>
+            </HStack>
           )}
         </>
       )}

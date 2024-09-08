@@ -2,7 +2,7 @@ import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";
 
 export const useControls = () => {
-  const [{ deck, idx, incorrect }, setState] = useAtom(deckAtom);
+  const [{ deck, idx, isRevealed }, setState] = useAtom(deckAtom);
 
   const handlePrevious = () => {
     setState((draft) => {
@@ -25,16 +25,27 @@ export const useControls = () => {
     });
   };
 
-  const handleToggleIncorrect = () => {
-    if (incorrect.includes(idx)) {
-      setState((draft) => {
-        draft.incorrect = draft.incorrect.filter((i) => i !== idx);
-      });
-    } else {
-      setState((draft) => {
-        draft.incorrect = [...draft.incorrect, idx];
-      });
-    }
+  const markCorrect = () => {
+    setState((draft) => {
+      draft.incorrect = draft.incorrect.filter((i) => i !== idx);
+    });
+  };
+
+  const markIncorrect = () => {
+    setState((draft) => {
+      draft.incorrect = [...draft.incorrect, idx];
+    });
+  };
+
+  const correctAndNext = () => {
+    if (!isRevealed) return;
+    markCorrect();
+    handleNext();
+  };
+  const incorrectAndNext = () => {
+    if (!isRevealed) return;
+    markIncorrect();
+    handleNext();
   };
 
   const isFirst = idx === 0;
@@ -43,8 +54,9 @@ export const useControls = () => {
   return {
     handlePrevious,
     handleNext,
-    handleToggleIncorrect,
     isFirst,
     isLast,
+    correctAndNext,
+    incorrectAndNext,
   };
 };
