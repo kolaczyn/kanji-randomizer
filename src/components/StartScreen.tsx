@@ -30,8 +30,8 @@ export const StartScreen = () => {
 
   return (
     <Container>
+      <Logo />
       <VStack>
-        <Logo />
         <Grid templateColumns="repeat(2, 1fr)" gap="2">
           {tiles.map((item) => (
             <GridItem key={item.id}>
@@ -62,14 +62,6 @@ export const StartScreen = () => {
             to={startQuizUrl}
           >
             Start Quiz
-          </Button>
-          <Button
-            as={ReactRouterLink}
-            w="full"
-            colorScheme="teal"
-            to="/vocab-search"
-          >
-            Search Vocab
           </Button>
         </VStack>
       </VStack>

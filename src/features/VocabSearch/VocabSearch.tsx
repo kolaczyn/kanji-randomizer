@@ -18,6 +18,7 @@ import { useDebounce } from "use-debounce";
 import { presetButtons } from "./consts.ts";
 import { VocabRow } from "./components/VocabRow.tsx";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { Logo } from "../../components/Logo.tsx";
 
 export const VocabSearch = () => {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,7 @@ export const VocabSearch = () => {
   return (
     <>
       <Container mb="3">
+        <Logo />
         <Text as="h1" fontWeight="bold" fontSize="xl" mb="2">
           Vocab
         </Text>
