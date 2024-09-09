@@ -8,6 +8,7 @@ import {
   Image,
   VStack,
   Text,
+  DrawerHeader,
 } from "@chakra-ui/react";
 
 type Props = {
@@ -21,6 +22,7 @@ export const StrokeOrderDrawer = ({ text, handleClose }: Props) => {
       <DrawerOverlay />
       <DrawerContent p="5">
         <DrawerCloseButton />
+        <DrawerHeader>Stroke order for {text}</DrawerHeader>
         <VStack align="flex-start" overflow="scroll">
           {text?.split("").map((x, idx) => (
             <Box key={idx}>
