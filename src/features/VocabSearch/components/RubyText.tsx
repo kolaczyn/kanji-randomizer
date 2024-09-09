@@ -8,7 +8,8 @@ type Props = {
 export const RubyText = ({ text, explanation }: Props) => (
   <Text fontSize="x-large">
     <ruby>
-      {text} <rp>(</rp>
+      {text}
+      <rp>(</rp>
       <rt>{explanation}</rt>
       <rp>)</rp>{" "}
     </ruby>

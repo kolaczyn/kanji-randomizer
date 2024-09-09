@@ -1,9 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { VocabRow } from "./VocabRow.tsx";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { DefinedQueryObserverResult } from "@tanstack/react-query";
 import { QuizType, VocabDto } from "../types.ts";
+import { StrokeOrderDrawer } from "./StrokeOrderDrawer.tsx";
 
 type Props = {
   response: DefinedQueryObserverResult<VocabDto>;
@@ -12,6 +13,7 @@ type Props = {
 
 export const SearchResultsRows = ({ response, quiz }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const [bottomSheet, setBottomSheet] = useState<string | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: response.data?.results.length ?? 0,
@@ -43,12 +45,17 @@ export const SearchResultsRows = ({ response, quiz }: Props) => {
                 virtualRowSize={virtualRow.size}
                 virtualRowStart={virtualRow.start}
                 quiz={quiz}
+                handleOpenStrokeOrder={setBottomSheet}
                 {...response.data.results[virtualRow.index]}
               />
             ))}
           </Box>
         </Box>
       </Box>
+      <StrokeOrderDrawer
+        text={bottomSheet}
+        handleClose={() => setBottomSheet(null)}
+      />
     </>
   );
 };

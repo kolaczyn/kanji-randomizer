@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { Button, HStack } from "@chakra-ui/react";
 import { RubyText } from "./RubyText.tsx";
 import { memo } from "react";
 import { QuizType } from "../types.ts";
@@ -11,10 +11,19 @@ type Props = {
   virtualRowSize: number;
   virtualRowStart: number;
   quiz: QuizType;
+  handleOpenStrokeOrder: (text: string) => void;
 };
 
 export const VocabRow = memo(
-  ({ jap, eng, kana, virtualRowStart, virtualRowSize, quiz }: Props) => (
+  ({
+    jap,
+    eng,
+    kana,
+    virtualRowStart,
+    virtualRowSize,
+    quiz,
+    handleOpenStrokeOrder,
+  }: Props) => (
     <HStack
       style={{
         position: "absolute",
@@ -29,6 +38,7 @@ export const VocabRow = memo(
         <RubyText text={jap} explanation={kana} />
       </Spoiler>
       <Spoiler hide={quiz === "hide-vocab"}>{eng}</Spoiler>
+      <Button onClick={() => handleOpenStrokeOrder(jap)}>Stroke order</Button>
     </HStack>
   ),
 );
