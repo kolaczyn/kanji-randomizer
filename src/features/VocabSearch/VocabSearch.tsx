@@ -19,7 +19,7 @@ import { presetButtons } from "./consts.ts";
 import { VocabRow } from "./components/VocabRow.tsx";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-export const Vocab = () => {
+export const VocabSearch = () => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState("level-n5");
   const [min, setMin] = useState(2);

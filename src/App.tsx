@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuizWrapper } from "./features/Quiz/QuizWrapper.tsx";
 
 import "@fontsource/noto-serif-jp/500.css";
-import { Vocab } from "./features/Vocab/Vocab.tsx";
+import { VocabSearch } from "./features/VocabSearch/VocabSearch.tsx";
 
 const queryClient = new QueryClient();
 
@@ -18,8 +18,8 @@ const router = createBrowserRouter([
     element: <QuizWrapper />,
   },
   {
-    path: "/vocab",
-    element: <Vocab />,
+    path: "/vocab-search",
+    element: <VocabSearch />,
   },
 ]);
 export const App = () => (
