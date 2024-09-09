@@ -1,35 +1,27 @@
 import { Button, Container, Grid, GridItem, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
 import { Logo } from "./Logo.tsx";
 import { useFetchHomeTiles } from "../hooks/useFetchHomeTiles.ts";
 import { NavTile } from "./NavTile.tsx";
 import { useToggleList } from "../hooks/useToggleList.ts";
-import { useNavigate } from "react-router-dom";
 import queryString from "query-string";
+import { ReactRouterLink } from "./ReactRouterLink.tsx";
 
 export const StartScreen = () => {
-  const navigate = useNavigate();
   const [selectedDecks, selectedDecksToggle] = useToggleList<string>([]);
   const [shouldShuffle, setShouldShuffle] = useState(false);
   const result = useFetchHomeTiles();
 
   const isButtonDisabled = selectedDecks.length === 0;
 
-  const handleStartQuiz = () => {
+  const startQuizUrl = useMemo(() => {
     const search = queryString.stringify({
       decks: selectedDecks,
       shouldShuffle: shouldShuffle,
     });
-    navigate({
-      pathname: "/deck",
-      search,
-    });
-  };
-
-  const handleStartVocab = () => {
-    navigate("/vocab");
-  };
+    return `/deck?${search}`;
+  }, [selectedDecks, shouldShuffle]);
 
   if (result.isLoading) return <h1>Loading</h1>;
   if (result.isError) return <h1>Error</h1>;
@@ -61,17 +53,23 @@ export const StartScreen = () => {
         >
           Shuffle
         </Checkbox>
-        <VStack w="full">
+        <VStack w="full" spacing="8">
           <Button
             w="full"
             colorScheme="teal"
             isDisabled={isButtonDisabled}
-            onClick={handleStartQuiz}
+            as={ReactRouterLink}
+            to={startQuizUrl}
           >
             Start Quiz
           </Button>
-          <Button mt="8" w="full" colorScheme="teal" onClick={handleStartVocab}>
-            Show vocab
+          <Button
+            as={ReactRouterLink}
+            w="full"
+            colorScheme="teal"
+            to="/vocab-search"
+          >
+            Search Vocab
           </Button>
         </VStack>
       </VStack>
