@@ -15,11 +15,13 @@ export const VocabSearch = () => {
   const [text, setText] = useState("level-n5");
   const [min, setMin] = useState<NumStr>("2");
   const [max, setMax] = useState<NumStr>("2");
+  const [onlyKanji, setOnlyKanji] = useState(true);
   const [debouncedText] = useDebounce(text, 350);
   const response = useFetchVocab({
     search: debouncedText,
     minLength: min,
     maxLength: max,
+    onlyKanji,
   });
 
   return (
@@ -38,6 +40,8 @@ export const VocabSearch = () => {
           text={text}
           quiz={quiz}
           setQuiz={setQuiz}
+          onlyKanji={onlyKanji}
+          setOnlyKanji={setOnlyKanji}
         />
         <PresetButtons handleSetText={setText} text={text} />
       </Container>

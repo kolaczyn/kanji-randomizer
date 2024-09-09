@@ -31,6 +31,7 @@
     "use-debounce": "^10.0.3"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "5",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

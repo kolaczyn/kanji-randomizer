@@ -6,6 +6,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Switch,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
@@ -20,6 +21,8 @@ type Props = {
   setMax: (value: NumStr) => void;
   quiz: QuizType;
   setQuiz: (value: QuizType) => void;
+  onlyKanji: boolean;
+  setOnlyKanji: (value: boolean) => void;
 };
 
 // TODO use react-hook-form
@@ -28,10 +31,12 @@ export const VocabForm = ({
   setMin,
   setMax,
   max,
-  setText,
   text,
+  setText,
   setQuiz,
   quiz,
+  onlyKanji,
+  setOnlyKanji,
 }: Props) => {
   return (
     <>
@@ -71,6 +76,16 @@ export const VocabForm = ({
             <Radio value={"hide-kanji" as QuizType}>Hide Kanji</Radio>
           </Stack>
         </RadioGroup>
+        <FormControl display="flex" alignItems="center">
+          <FormLabel htmlFor="only-kanji-switch" mb="0">
+            Only Kanji
+          </FormLabel>
+          <Switch
+            id="only-kanji-switch"
+            isChecked={onlyKanji}
+            onChange={(e) => setOnlyKanji(e.target.checked)}
+          />
+        </FormControl>
       </VStack>
     </>
   );
