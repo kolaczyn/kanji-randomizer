@@ -3,13 +3,14 @@ import { VocabRow } from "./VocabRow.tsx";
 import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { DefinedQueryObserverResult } from "@tanstack/react-query";
-import { VocabDto } from "../types.ts";
+import { QuizType, VocabDto } from "../types.ts";
 
 type Props = {
   response: DefinedQueryObserverResult<VocabDto>;
+  quiz: QuizType;
 };
 
-export const SearchResultsRows = ({ response }: Props) => {
+export const SearchResultsRows = ({ response, quiz }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -41,6 +42,7 @@ export const SearchResultsRows = ({ response }: Props) => {
                 key={virtualRow.index}
                 virtualRowSize={virtualRow.size}
                 virtualRowStart={virtualRow.start}
+                quiz={quiz}
                 {...response.data.results[virtualRow.index]}
               />
             ))}

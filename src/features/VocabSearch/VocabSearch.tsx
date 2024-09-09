@@ -8,9 +8,10 @@ import { SearchResultsHeader } from "./components/SearchResultsHeader.tsx";
 import { PresetButtons } from "./components/PresetButtons.tsx";
 import { SearchResultsRows } from "./components/SearchResultsRows.tsx";
 import { VocabForm } from "./components/VocabForm.tsx";
-import { NumStr } from "./types.ts";
+import { NumStr, QuizType } from "./types.ts";
 
 export const VocabSearch = () => {
+  const [quiz, setQuiz] = useState<QuizType>("no-quiz");
   const [text, setText] = useState("level-n5");
   const [min, setMin] = useState<NumStr>("2");
   const [max, setMax] = useState<NumStr>("2");
@@ -35,6 +36,8 @@ export const VocabSearch = () => {
           setMax={setMax}
           setText={setText}
           text={text}
+          quiz={quiz}
+          setQuiz={setQuiz}
         />
         <PresetButtons handleSetText={setText} text={text} />
       </Container>
@@ -46,7 +49,7 @@ export const VocabSearch = () => {
               results={response.data.results}
               timeMs={response.data.timeMs}
             />
-            <SearchResultsRows response={response} />
+            <SearchResultsRows response={response} quiz={quiz} />
           </>
         ) : response.isLoading ? (
           <TableSkeleton />

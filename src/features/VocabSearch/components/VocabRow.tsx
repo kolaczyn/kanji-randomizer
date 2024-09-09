@@ -1,6 +1,8 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { RubyText } from "./RubyText.tsx";
 import { memo } from "react";
+import { QuizType } from "../types.ts";
+import { Spoiler } from "./Spoiler.tsx";
 
 type Props = {
   jap: string;
@@ -8,10 +10,11 @@ type Props = {
   eng: string;
   virtualRowSize: number;
   virtualRowStart: number;
+  quiz: QuizType;
 };
 
 export const VocabRow = memo(
-  ({ jap, eng, kana, virtualRowStart, virtualRowSize }: Props) => (
+  ({ jap, eng, kana, virtualRowStart, virtualRowSize, quiz }: Props) => (
     <HStack
       style={{
         position: "absolute",
@@ -22,10 +25,10 @@ export const VocabRow = memo(
         transform: `translateY(${virtualRowStart}px)`,
       }}
     >
-      <Box>
+      <Spoiler hide={quiz === "hide-kanji"}>
         <RubyText text={jap} explanation={kana} />
-      </Box>
-      <Box>{eng}</Box>
+      </Spoiler>
+      <Spoiler hide={quiz === "hide-vocab"}>{eng}</Spoiler>
     </HStack>
   ),
 );
