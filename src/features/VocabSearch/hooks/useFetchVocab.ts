@@ -6,8 +6,8 @@ import queryString from "query-string";
 
 type UseFetchVocabArgs = {
   search: string;
-  minLength: number;
-  maxLength: number;
+  minLength: string;
+  maxLength: string;
 };
 
 export const useFetchVocab = ({

@@ -5,14 +5,15 @@ import {
   Input,
   Textarea,
 } from "@chakra-ui/react";
+import { NumStr } from "../types.ts";
 
 type Props = {
   text: string;
   setText: (value: string) => void;
-  min: number;
-  setMin: (value: number) => void;
-  max: number;
-  setMax: (value: number) => void;
+  min: NumStr;
+  setMin: (value: NumStr) => void;
+  max: NumStr;
+  setMax: (value: NumStr) => void;
 };
 
 export const VocabForm = ({
@@ -36,7 +37,9 @@ export const VocabForm = ({
           <Input
             type="number"
             value={min}
-            onChange={(e) => setMin(e.target.valueAsNumber)}
+            onChange={(e) => {
+              setMin(e.target.value as NumStr);
+            }}
           />
         </FormControl>
         <FormControl>
@@ -45,7 +48,9 @@ export const VocabForm = ({
             type="number"
             placeholder="max length"
             value={max}
-            onChange={(e) => setMax(e.target.valueAsNumber)}
+            onChange={(e) => {
+              setMax(e.target.value as NumStr);
+            }}
           />
         </FormControl>
       </HStack>

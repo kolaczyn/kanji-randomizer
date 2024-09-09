@@ -8,11 +8,12 @@ import { SearchResultsHeader } from "./components/SearchResultsHeader.tsx";
 import { PresetButtons } from "./components/PresetButtons.tsx";
 import { SearchResultsRows } from "./components/SearchResultsRows.tsx";
 import { VocabForm } from "./components/VocabForm.tsx";
+import { NumStr } from "./types.ts";
 
 export const VocabSearch = () => {
   const [text, setText] = useState("level-n5");
-  const [min, setMin] = useState(2);
-  const [max, setMax] = useState(2);
+  const [min, setMin] = useState<NumStr>("2");
+  const [max, setMax] = useState<NumStr>("2");
   const [debouncedText] = useDebounce(text, 350);
   const response = useFetchVocab({
     search: debouncedText,
