@@ -1,10 +1,13 @@
 import { toPercentage } from "../utils/toPercentage.ts";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../state/deckAtom.ts";
-import { Text } from "@chakra-ui/react";
+import { Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { SearchResultsRows } from "../features/VocabSearch/components/SearchResultsRows.tsx";
+import { useState } from "react";
+import { QuizType } from "../features/VocabSearch/types.ts";
 
 export const IncorrectKanji = () => {
+  const [quiz, setQuiz] = useState<QuizType>("no-quiz");
   const [{ idx, incorrect, deck, isRevealed }] = useAtom(deckAtom);
   const soFar = idx + (isRevealed ? 1 : 0);
 
@@ -28,7 +31,14 @@ export const IncorrectKanji = () => {
       <div>
         Okay: {correct} ({correctPercent})
       </div>
-      <SearchResultsRows results={results} quiz={"no-quiz"} />
+      <RadioGroup value={quiz} onChange={(x) => setQuiz(x as QuizType)}>
+        <Stack spacing={5} direction="row">
+          <Radio value={"no-quiz" as QuizType}>No Quiz</Radio>
+          <Radio value={"hide-vocab" as QuizType}>Hide Vocab</Radio>
+          <Radio value={"hide-kanji" as QuizType}>Hide Kanji</Radio>
+        </Stack>
+      </RadioGroup>
+      <SearchResultsRows results={results} quiz={quiz} />
     </>
   ) : null;
 };
