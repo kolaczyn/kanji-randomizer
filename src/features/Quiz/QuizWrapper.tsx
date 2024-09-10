@@ -12,10 +12,10 @@ export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
   const [, setDeck] = useAtom(deckAtom);
 
-  const { decks, shouldShuffle } = useAppSearchParams();
+  const { decks, shouldShuffle, vocab } = useAppSearchParams();
   const params = useParams();
   const lvl = params.level as Level;
-  const deckResponse = useFetchDeck(decks);
+  const deckResponse = useFetchDeck(decks, vocab ? "vocab" : "kanji");
 
   // This should work for now, but in the future I should do something like this:
   // https://jotai.org/docs/guides/initialize-atom-on-render
