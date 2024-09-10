@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { VocabQueryDto } from "../features/VocabSearch/hooks/useFetchVocab.ts";
 
 export const useAppSearchParams = () => {
   const [searchParams] = useSearchParams();
@@ -6,9 +7,24 @@ export const useAppSearchParams = () => {
   const decks = searchParams.getAll("decks");
   const vocab = searchParams.get("vocab") === "true";
 
+  const minLen = searchParams.get("minLen");
+  const maxLen = searchParams.get("maxLen");
+  const query = searchParams.get("query");
+  const onlyKanji = searchParams.get("onlyKanji") === "true";
+
   return {
-    shouldShuffle,
-    decks,
-    vocab,
+    stroke: {
+      decks,
+    },
+    vocab: {
+      minLen,
+      maxLen,
+      query,
+      onlyKanji,
+    } as VocabQueryDto,
+    common: {
+      vocab,
+      shouldShuffle,
+    },
   };
 };

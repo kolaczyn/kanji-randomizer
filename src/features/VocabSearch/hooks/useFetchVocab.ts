@@ -4,7 +4,7 @@ import { NumStr, VocabDto } from "../types.ts";
 import { API_BASE_URL } from "../../../const/env.ts";
 import queryString from "query-string";
 
-type VocabQueryDto = {
+export type VocabQueryDto = {
   query: string;
   minLen: NumStr;
   maxLen: NumStr;

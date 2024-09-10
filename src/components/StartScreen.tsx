@@ -23,8 +23,6 @@ export const StartScreen = () => {
     return `/deck?${search}`;
   }, [selectedDecks, shouldShuffle]);
 
-  const startVocabUrl = `${startStrokeQuizUrl}&vocab=true`;
-
   if (result.isLoading) return <h1>Loading</h1>;
   if (result.isError) return <h1>Error</h1>;
 
@@ -64,15 +62,6 @@ export const StartScreen = () => {
             to={startStrokeQuizUrl}
           >
             Stroke Order Quiz
-          </Button>
-          <Button
-            w="full"
-            colorScheme="teal"
-            isDisabled={isButtonDisabled}
-            as={ReactRouterLink}
-            to={startVocabUrl}
-          >
-            Vocab Quiz
           </Button>
         </VStack>
       </VStack>

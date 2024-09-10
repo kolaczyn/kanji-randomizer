@@ -4,25 +4,31 @@ import { deckAtom } from "../../state/deckAtom.ts";
 import { useAppSearchParams } from "../../hooks/useAppSearchParams.ts";
 import { useParams } from "react-router-dom";
 import { Level } from "../../types.ts";
-import { useFetchDeck } from "../../hooks/useFetchDeck.ts";
+import { useFetchKanjiDeck } from "../../hooks/useFetchKanjiDeck.ts";
 import { shuffleArray } from "../../utils/shuffleArray.ts";
 import { Quiz } from "./Quiz.tsx";
+import { useFetchVocabDeck } from "../../hooks/useFetchVocabDeck.ts";
 
 export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);
   const [, setDeck] = useAtom(deckAtom);
 
-  const { decks, shouldShuffle, vocab } = useAppSearchParams();
+  const { stroke, vocab, common } = useAppSearchParams();
   const params = useParams();
   const lvl = params.level as Level;
-  const deckResponse = useFetchDeck(decks, vocab ? "vocab" : "kanji");
+
+  const kanjiDeckResponse = useFetchKanjiDeck(stroke.decks, !common.vocab);
+  const vocabDeckResponse = useFetchVocabDeck(vocab, common.vocab);
+  const response = vocab ? vocabDeckResponse : kanjiDeckResponse;
 
   // This should work for now, but in the future I should do something like this:
   // https://jotai.org/docs/guides/initialize-atom-on-render
   useEffect(() => {
-    if (deckResponse.status !== "success") return;
-    const sortedDeck = deckResponse.data.deck;
-    const finalDeck = shouldShuffle ? shuffleArray(sortedDeck) : sortedDeck;
+    if (response.status !== "success") return;
+    const sortedDeck = response.data.deck;
+    const finalDeck = common.shouldShuffle
+      ? shuffleArray(sortedDeck)
+      : sortedDeck;
 
     setDeck((draft) => {
       draft.deck = finalDeck;
@@ -32,7 +38,7 @@ export const QuizWrapper = () => {
     });
 
     setIsInit(true);
-  }, [deckResponse.data, deckResponse.status, lvl, setDeck, shouldShuffle]);
+  }, [response.data, response.status, lvl, setDeck, common.shouldShuffle]);
 
   return isInit ? <Quiz /> : null;
 };
