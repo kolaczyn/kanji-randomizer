@@ -13,14 +13,14 @@ import { FormProvider, useForm } from "react-hook-form";
 export const VocabSearch = () => {
   const vocabSearchForm = useForm<VocabSearchForm>({
     defaultValues: {
-      text: "level-n5",
+      search: "level-n5",
       quizType: "no-quiz",
       min: "2",
       max: "2",
     },
   });
-  const { quizType, min, max, onlyKanji, text } = vocabSearchForm.watch();
-  const [debouncedText] = useDebounce(text, 350);
+  const { quizType, min, max, onlyKanji, search } = vocabSearchForm.watch();
+  const [debouncedText] = useDebounce(search, 350);
   const response = useFetchVocab({
     search: debouncedText,
     minLength: min,

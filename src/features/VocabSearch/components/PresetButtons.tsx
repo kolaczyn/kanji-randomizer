@@ -6,7 +6,7 @@ import { textToLvl } from "../utils/textToLvl.ts";
 
 export const PresetButtons = () => {
   const { setValue, getValues } = useFormContext<VocabSearchForm>();
-  const selectedLvl = textToLvl(getValues("text"));
+  const selectedLvl = textToLvl(getValues("search"));
   return (
     <HStack mt="2">
       <Text>Presets:</Text>
@@ -16,7 +16,7 @@ export const PresetButtons = () => {
             rounded="none"
             colorScheme={selectedLvl <= x.id ? "teal" : undefined}
             key={x.id}
-            onClick={() => setValue("text", x.value)}
+            onClick={() => setValue("search", x.value)}
           >
             {x.label}
           </Button>

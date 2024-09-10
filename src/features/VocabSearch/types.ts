@@ -9,7 +9,7 @@ export type QuizType = "no-quiz" | "hide-kanji" | "hide-vocab";
 
 export type VocabSearchForm = {
   quizType: QuizType;
-  text: string;
+  search: string;
   min: NumStr;
   max: NumStr;
   onlyKanji: boolean;

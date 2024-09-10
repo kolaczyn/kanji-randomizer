@@ -18,7 +18,7 @@ export const VocabForm = () => {
   return (
     <>
       <Textarea
-        {...register("text")}
+        {...register("search")}
         placeholder="Kanji to look for in vocabulary dictionary"
       />
       <VStack mt="2">
