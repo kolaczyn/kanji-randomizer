@@ -1,7 +1,8 @@
 import { toPercentage } from "../utils/toPercentage.ts";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../state/deckAtom.ts";
-import { ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { SearchResultsRows } from "../features/VocabSearch/components/SearchResultsRows.tsx";
 
 export const IncorrectKanji = () => {
   const [{ idx, incorrect, deck, isRevealed }] = useAtom(deckAtom);
@@ -10,6 +11,13 @@ export const IncorrectKanji = () => {
   const correct = soFar - incorrect.length;
   const correctPercent = toPercentage(correct, soFar);
   const incorrectPercent = toPercentage(incorrect.length, soFar);
+
+  const results = incorrect.map((idx) => ({
+    jap: deck[idx].character,
+    eng: deck[idx].meaning,
+    // TODO remove
+    kana: "",
+  }));
 
   return incorrect.length > 0 ? (
     <>
@@ -20,13 +28,7 @@ export const IncorrectKanji = () => {
       <div>
         Okay: {correct} ({correctPercent})
       </div>
-      <UnorderedList>
-        {incorrect.map((idx) => (
-          <ListItem key={idx} listStyleType="none">
-            {deck[idx].character} - {deck[idx].meaning}
-          </ListItem>
-        ))}
-      </UnorderedList>
+      <SearchResultsRows results={results} quiz={"no-quiz"} />
     </>
   ) : null;
 };

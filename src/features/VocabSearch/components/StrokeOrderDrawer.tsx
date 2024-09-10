@@ -18,7 +18,7 @@ type Props = {
 
 export const StrokeOrderDrawer = ({ text, handleClose }: Props) => {
   return (
-    <Drawer isOpen={!!text} placement="right" onClose={handleClose} size="xl">
+    <Drawer isOpen={!!text} placement="right" onClose={handleClose} size="full">
       <DrawerOverlay />
       <DrawerContent p="5">
         <DrawerCloseButton />

@@ -53,7 +53,7 @@ export const VocabSearch = () => {
               results={response.data.results}
               timeMs={response.data.timeMs}
             />
-            <SearchResultsRows response={response} quiz={quiz} />
+            <SearchResultsRows results={response.data.results} quiz={quiz} />
           </>
         ) : response.isLoading ? (
           <TableSkeleton />
