@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "types": "tsc --noEmit",
-    "ci": "run-p -cl lint types build"
+    "test": "vitest --run",
+    "ci": "run-p -cl lint types build test"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -33,6 +34,8 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "5",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
@@ -41,9 +44,11 @@
     "eslint": "^8.53.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "jsdom": "^25.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.1.0",
     "typescript": "^5.2.2",
-    "vite": "^5.0.13"
+    "vite": "^5.4.3",
+    "vitest": "^2.0.5"
   }
 }
