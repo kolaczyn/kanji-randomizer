@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useControls } from "../features/Quiz/hooks/useControls.ts";
+import { useControls } from "./useControls.ts";
 
 export const useEventListeners = () => {
   const { handlePrevious, handleNext, correctAndNext, incorrectAndNext } =

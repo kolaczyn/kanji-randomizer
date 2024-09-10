@@ -1,6 +1,6 @@
 import { Container, Grid, GridItem } from "@chakra-ui/react";
-import { Logo } from "../../../components/Logo.tsx";
-import { HomeNavTile } from "../../../components/HomeNavTile.tsx";
+import { Logo } from "../../components/Logo.tsx";
+import { HomeNavTile } from "./components/HomeNavTile.tsx";
 
 const navTiles = [
   {

@@ -1,10 +1,10 @@
-import { toPercentage } from "../utils/toPercentage.ts";
+import { toPercentage } from "./toPercentage.ts";
 import { useAtom } from "jotai/react";
-import { deckAtom } from "../state/deckAtom.ts";
+import { deckAtom } from "../../state/deckAtom.ts";
 import { Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
-import { SearchResultsRows } from "../features/VocabSearch/components/SearchResultsRows.tsx";
+import { SearchResultsRows } from "../../features/VocabSearch/components/SearchResultsRows.tsx";
 import { useState } from "react";
-import { QuizType } from "../features/VocabSearch/types.ts";
+import { QuizType } from "../../features/VocabSearch/types.ts";
 
 export const IncorrectKanji = () => {
   const [quiz, setQuiz] = useState<QuizType>("no-quiz");

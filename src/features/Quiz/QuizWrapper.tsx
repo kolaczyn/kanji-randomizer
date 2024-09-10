@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../state/deckAtom.ts";
-import { useAppSearchParams } from "../../hooks/useAppSearchParams.ts";
+import { useAppSearchParams } from "./hooks/useAppSearchParams.ts";
 import { useParams } from "react-router-dom";
 import { Level } from "../../types.ts";
-import { useFetchKanjiDeck } from "../../hooks/useFetchKanjiDeck.ts";
-import { shuffleArray } from "../../utils/shuffleArray.ts";
+import { useFetchKanjiDeck } from "./hooks/useFetchKanjiDeck.ts";
+import { shuffleArray } from "./utils/shuffleArray.ts";
 import { Quiz } from "./Quiz.tsx";
-import { useFetchVocabDeck } from "../../hooks/useFetchVocabDeck.ts";
+import { useFetchVocabDeck } from "./hooks/useFetchVocabDeck.ts";
 
 export const QuizWrapper = () => {
   const [isInit, setIsInit] = useState(false);

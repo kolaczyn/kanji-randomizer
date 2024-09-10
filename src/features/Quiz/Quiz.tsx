@@ -1,9 +1,9 @@
 import { useAtom } from "jotai/react";
 import { useMemo } from "react";
 import { Box, Container, Flex } from "@chakra-ui/react";
-import { useEventListeners } from "../../hooks/useEventListeners.ts";
-import { useSettings } from "../../hooks/useSettings.ts";
-import { IncorrectKanji } from "../../components/IncorrectKanji.tsx";
+import { useEventListeners } from "./hooks/useEventListeners.ts";
+import { useSettings } from "../Settings/hooks/useSettings.ts";
+import { IncorrectKanji } from "../../components/IncorrectKanji/IncorrectKanji.tsx";
 import { QuizControls } from "./components/QuizControls.tsx";
 import { QuizCard } from "./components/QuizCard.tsx";
 import { CharacterAdditionalInfo } from "./components/CharacterAdditionalInfo.tsx";

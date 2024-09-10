@@ -9,7 +9,7 @@ import { SearchResultsRows } from "./components/SearchResultsRows.tsx";
 import { VocabForm } from "./components/VocabForm.tsx";
 import { VocabSearchForm } from "./types.ts";
 import { FormProvider, useForm } from "react-hook-form";
-import { ReactRouterLink } from "../../components/ReactRouterLink.tsx";
+import { RouterLink } from "../../components/RouterLink.tsx";
 import { useMemo } from "react";
 import queryString from "query-string";
 
@@ -63,7 +63,7 @@ export const VocabSearch = () => {
           to={btnLink}
           colorScheme="teal"
           isDisabled={isButtonDisabled}
-          as={ReactRouterLink}
+          as={RouterLink}
         >
           Vocab Quiz
         </Button>

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { SettingsContext } from "../components/SettingsProvider.tsx";
+import { SettingsContext } from "../context/SettingsProvider.tsx";
 
 const KEY = "appSettings";
 

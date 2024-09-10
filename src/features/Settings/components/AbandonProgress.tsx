@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai/react";
-import { deckAtom } from "../state/deckAtom.ts";
+import { deckAtom } from "../../../state/deckAtom.ts";
 
 export const AbandonProgress = () => {
   const [{ idx }] = useAtom(deckAtom);

@@ -1,5 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
-import { RouterLink } from "./RouterLink.tsx";
+import { RouterLink } from "../../../components/RouterLink.tsx";
 
 type Props = {
   title: string;

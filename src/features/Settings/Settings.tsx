@@ -12,8 +12,8 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ShowFirst, useSettings } from "../hooks/useSettings.ts";
-import { AbandonProgress } from "./AbandonProgress.tsx";
+import { ShowFirst, useSettings } from "./hooks/useSettings.ts";
+import { AbandonProgress } from "./components/AbandonProgress.tsx";
 
 export const Settings = () => {
   const [settings, setSettings] = useSettings();

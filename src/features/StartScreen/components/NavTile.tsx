@@ -7,7 +7,7 @@ type Props = {
   onClick: () => void;
 };
 
-// TODO this should be a box, but I don't want to restyle this whole thing
+// TODO this should be a button, but I don't want to restyle this whole thing
 export const NavTile = ({
   title,
   subtitle,

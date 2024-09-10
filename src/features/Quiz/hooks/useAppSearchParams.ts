@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { VocabQueryDto } from "../features/VocabSearch/hooks/useFetchVocab.ts";
+import { VocabQueryDto } from "../../VocabSearch/hooks/useFetchVocab.ts";
 
 export const useAppSearchParams = () => {
   const [searchParams] = useSearchParams();

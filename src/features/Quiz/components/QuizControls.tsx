@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, VStack } from "@chakra-ui/react";
-import { Settings } from "../../../components/Settings.tsx";
+import { Settings } from "../../Settings/Settings.tsx";
 import { useControls } from "../hooks/useControls.ts";
 import { useAtom } from "jotai/react";
 import { deckAtom } from "../../../state/deckAtom.ts";

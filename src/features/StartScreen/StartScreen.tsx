@@ -1,12 +1,12 @@
 import { Button, Container, Grid, GridItem, VStack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { Checkbox } from "@chakra-ui/react";
-import { Logo } from "./Logo.tsx";
-import { useFetchHomeTiles } from "../hooks/useFetchHomeTiles.ts";
-import { NavTile } from "./NavTile.tsx";
-import { useToggleList } from "../hooks/useToggleList.ts";
+import { Logo } from "../../components/Logo.tsx";
+import { useFetchHomeTiles } from "./hooks/useFetchHomeTiles.ts";
+import { NavTile } from "./components/NavTile.tsx";
+import { useToggleList } from "./hooks/useToggleList.ts";
 import queryString from "query-string";
-import { ReactRouterLink } from "./ReactRouterLink.tsx";
+import { RouterLink } from "../../components/RouterLink.tsx";
 
 export const StartScreen = () => {
   const [selectedDecks, selectedDecksToggle] = useToggleList<string>([]);
@@ -58,7 +58,7 @@ export const StartScreen = () => {
             w="full"
             colorScheme="teal"
             isDisabled={isButtonDisabled}
-            as={ReactRouterLink}
+            as={RouterLink}
             to={startStrokeQuizUrl}
           >
             Stroke Order Quiz

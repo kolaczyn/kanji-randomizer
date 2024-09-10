@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { DeckDto } from "../types.ts";
-import { API_BASE_URL } from "../const/env.ts";
+import { DeckDto } from "../../../types.ts";
+import { API_BASE_URL } from "../../../const/env.ts";
 import queryString from "query-string";
-import { VocabQueryDto } from "../features/VocabSearch/hooks/useFetchVocab.ts";
+import { VocabQueryDto } from "../../VocabSearch/hooks/useFetchVocab.ts";
 
 export const useFetchVocabDeck = (
   { onlyKanji, minLen, maxLen, query }: VocabQueryDto,
