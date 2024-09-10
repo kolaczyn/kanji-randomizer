@@ -1,35 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { VocabDto } from "../types.ts";
+import { NumStr, VocabDto } from "../types.ts";
 import { API_BASE_URL } from "../../../const/env.ts";
 import queryString from "query-string";
 
-type UseFetchVocabArgs = {
-  search: string;
-  minLength: string;
-  maxLength: string;
+type VocabQueryDto = {
+  query: string;
+  minLen: NumStr;
+  maxLen: NumStr;
   onlyKanji: boolean;
 };
 
 export const useFetchVocab = ({
-  minLength,
-  maxLength,
-  search,
+  query,
+  minLen,
+  maxLen,
   onlyKanji,
-}: UseFetchVocabArgs) =>
+}: VocabQueryDto) =>
   useQuery<VocabDto>({
     // TODO add eslint rule to make sure queryKey is always happy
-    queryKey: ["vocab", search, minLength, maxLength, onlyKanji],
+    queryKey: ["vocab", query, minLen, maxLen, onlyKanji],
     queryFn: async () =>
       axios
         .get<VocabDto>(
-          `${API_BASE_URL}/v2/vocab/${search}?${queryString.stringify({
-            minLength,
-            maxLength,
+          `${API_BASE_URL}/v2/vocab/?${queryString.stringify({
+            minLen,
+            maxLen,
             onlyKanji,
-          })}`,
+            query,
+          } as VocabQueryDto)}`,
         )
         .then((x) => x.data),
-    enabled: search.length > 0,
+    enabled: query.length > 0,
     refetchOnWindowFocus: false,
   });
