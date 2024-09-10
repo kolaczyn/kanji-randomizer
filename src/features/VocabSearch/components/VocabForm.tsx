@@ -10,66 +10,36 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { NumStr, QuizType } from "../types.ts";
+import { QuizType, VocabSearchForm } from "../types.ts";
+import { useFormContext } from "react-hook-form";
 
-type Props = {
-  text: string;
-  setText: (value: string) => void;
-  min: NumStr;
-  setMin: (value: NumStr) => void;
-  max: NumStr;
-  setMax: (value: NumStr) => void;
-  quiz: QuizType;
-  setQuiz: (value: QuizType) => void;
-  onlyKanji: boolean;
-  setOnlyKanji: (value: boolean) => void;
-};
-
-// TODO use react-hook-form
-export const VocabForm = ({
-  min,
-  setMin,
-  setMax,
-  max,
-  text,
-  setText,
-  setQuiz,
-  quiz,
-  onlyKanji,
-  setOnlyKanji,
-}: Props) => {
+export const VocabForm = () => {
+  const { register, setValue, getValues } = useFormContext<VocabSearchForm>();
   return (
     <>
       <Textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        {...register("text")}
         placeholder="Kanji to look for in vocabulary dictionary"
       />
       <VStack mt="2">
         <HStack>
           <FormControl>
             <FormLabel>Min length</FormLabel>
-            <Input
-              type="number"
-              value={min}
-              onChange={(e) => {
-                setMin(e.target.value as NumStr);
-              }}
-            />
+            <Input type="number" {...register("min")} />
           </FormControl>
           <FormControl>
             <FormLabel>Max length</FormLabel>
             <Input
               type="number"
               placeholder="max length"
-              value={max}
-              onChange={(e) => {
-                setMax(e.target.value as NumStr);
-              }}
+              {...register("max")}
             />
           </FormControl>
         </HStack>
-        <RadioGroup value={quiz} onChange={(x) => setQuiz(x as QuizType)}>
+        <RadioGroup
+          value={getValues("quizType")}
+          onChange={(x) => setValue("quizType", x as QuizType)}
+        >
           <Stack spacing={5} direction="row">
             <Radio value={"no-quiz" as QuizType}>No Quiz</Radio>
             <Radio value={"hide-vocab" as QuizType}>Hide Vocab</Radio>
@@ -82,8 +52,8 @@ export const VocabForm = ({
           </FormLabel>
           <Switch
             id="only-kanji-switch"
-            isChecked={onlyKanji}
-            onChange={(e) => setOnlyKanji(e.target.checked)}
+            isChecked={getValues("onlyKanji")}
+            onChange={(e) => setValue("onlyKanji", e.target.checked)}
           />
         </FormControl>
       </VStack>

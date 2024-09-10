@@ -1,5 +1,7 @@
 import { Button, ButtonGroup, HStack, Text } from "@chakra-ui/react";
 import { presetButtons } from "../consts.ts";
+import { useFormContext } from "react-hook-form";
+import { VocabSearchForm } from "../types.ts";
 
 const textToLvl = (text: string) => {
   const currentLevel = text.replace("level-n", "");
@@ -8,13 +10,9 @@ const textToLvl = (text: string) => {
   return asNumNormalized;
 };
 
-type Props = {
-  text: string;
-  handleSetText: (id: string) => void;
-};
-
-export const PresetButtons = ({ handleSetText, text }: Props) => {
-  const selectedLvl = textToLvl(text);
+export const PresetButtons = () => {
+  const { setValue, getValues } = useFormContext<VocabSearchForm>();
+  const selectedLvl = textToLvl(getValues("text"));
   return (
     <HStack mt="2">
       <Text>Presets: {selectedLvl}</Text>
@@ -24,7 +22,7 @@ export const PresetButtons = ({ handleSetText, text }: Props) => {
             rounded="none"
             colorScheme={selectedLvl <= x.id ? "teal" : undefined}
             key={x.id}
-            onClick={() => handleSetText(x.value)}
+            onClick={() => setValue("text", x.value)}
           >
             {x.label}
           </Button>

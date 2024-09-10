@@ -1,5 +1,4 @@
 import { Container, Text } from "@chakra-ui/react";
-import { useState } from "react";
 import { useFetchVocab } from "./hooks/useFetchVocab.ts";
 import { useDebounce } from "use-debounce";
 import { Logo } from "../../components/Logo.tsx";
@@ -8,14 +7,19 @@ import { SearchResultsHeader } from "./components/SearchResultsHeader.tsx";
 import { PresetButtons } from "./components/PresetButtons.tsx";
 import { SearchResultsRows } from "./components/SearchResultsRows.tsx";
 import { VocabForm } from "./components/VocabForm.tsx";
-import { NumStr, QuizType } from "./types.ts";
+import { VocabSearchForm } from "./types.ts";
+import { FormProvider, useForm } from "react-hook-form";
 
 export const VocabSearch = () => {
-  const [quiz, setQuiz] = useState<QuizType>("no-quiz");
-  const [text, setText] = useState("level-n5");
-  const [min, setMin] = useState<NumStr>("2");
-  const [max, setMax] = useState<NumStr>("2");
-  const [onlyKanji, setOnlyKanji] = useState(true);
+  const vocabSearchForm = useForm<VocabSearchForm>({
+    defaultValues: {
+      text: "level-n5",
+      quizType: "no-quiz",
+      min: "2",
+      max: "2",
+    },
+  });
+  const { quizType, min, max, onlyKanji, text } = vocabSearchForm.watch();
   const [debouncedText] = useDebounce(text, 350);
   const response = useFetchVocab({
     search: debouncedText,
@@ -31,19 +35,10 @@ export const VocabSearch = () => {
         <Text as="h1" fontWeight="bold" fontSize="xl" mb="2">
           Vocab
         </Text>
-        <VocabForm
-          min={min}
-          setMin={setMin}
-          max={max}
-          setMax={setMax}
-          setText={setText}
-          text={text}
-          quiz={quiz}
-          setQuiz={setQuiz}
-          onlyKanji={onlyKanji}
-          setOnlyKanji={setOnlyKanji}
-        />
-        <PresetButtons handleSetText={setText} text={text} />
+        <FormProvider {...vocabSearchForm}>
+          <VocabForm />
+          <PresetButtons />
+        </FormProvider>
       </Container>
 
       <Container maxW="container.lg">
@@ -53,7 +48,10 @@ export const VocabSearch = () => {
               results={response.data.results}
               timeMs={response.data.timeMs}
             />
-            <SearchResultsRows results={response.data.results} quiz={quiz} />
+            <SearchResultsRows
+              results={response.data.results}
+              quiz={quizType}
+            />
           </>
         ) : response.isLoading ? (
           <TableSkeleton />

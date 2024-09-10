@@ -6,3 +6,11 @@ export type VocabDto = {
 export type NumStr = `${number}`;
 
 export type QuizType = "no-quiz" | "hide-kanji" | "hide-vocab";
+
+export type VocabSearchForm = {
+  quizType: QuizType;
+  text: string;
+  min: NumStr;
+  max: NumStr;
+  onlyKanji: boolean;
+};
