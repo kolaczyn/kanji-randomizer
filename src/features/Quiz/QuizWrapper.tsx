@@ -19,7 +19,7 @@ export const QuizWrapper = () => {
 
   const kanjiDeckResponse = useFetchKanjiDeck(stroke.decks, !common.vocab);
   const vocabDeckResponse = useFetchVocabDeck(vocab, common.vocab);
-  const response = vocab ? vocabDeckResponse : kanjiDeckResponse;
+  const response = common.vocab ? vocabDeckResponse : kanjiDeckResponse;
 
   // This should work for now, but in the future I should do something like this:
   // https://jotai.org/docs/guides/initialize-atom-on-render
